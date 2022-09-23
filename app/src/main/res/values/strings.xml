@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="add_files">Add Files</string>
+    <string name="app_name">ShareFileServer</string>
+    <string name="get_wifiname_toast">Obtaining the wifi name requires obtaining positioning permission</string>
+    <string name="network_change_listener">Network Change Listener</string>
+    <string name="notification_content">Please do not turn off the service when sharing files</string>
+    <string name="notification_title">Is ensuring the normal operation of the sharing service</string>
+    <string name="please_install_file_explorer">Please install a file manager</string>
+    <string name="please_select_files">Please select multiple files to share!</string>
+    <string name="search_menu_title">Search</string>
+    <string name="server_name">Server Run Service</string>
+</resources>

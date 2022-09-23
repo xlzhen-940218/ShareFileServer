@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<title>Share File Server Management Add Files</title>
+		<link rel="stylesheet" type="text/css" href="css/app.css">
+		</link>
+	</head>
+	<body style="margin: 0 auto;" onload="init()">
+		<!--<header id="coin_header">
+			<h2 style="text-align: center;">来个硬币，更新给力！</h2>
+			<div style="font-size: 14px;text-align: right;" onclick="closeCoinHeader()">关闭广告</div>
+			<br>
+			<div style="text-align: center;">
+				<img style="width: 150px;margin: 10px;" src="imgs/wechat.jpg">
+				<img style="width: 150px;margin: 10px;" src="imgs/alipay.jpg">
+			</div>
+		</header>-->
+		<div id="content" style="padding-bottom: 60px;">
+
+		</div>
+		<div id="saveSelect" class="download_button unselect" onclick="saveSelect()"></div>
+		<script src="js/jquery-3.5.1.min.js"></script>
+		<script src="js/string.js"></script>
+		<!-- 创建View -->
+		<script>
+			var data;
+			var unselect =
+				'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFgAAABYCAYAAABxlTA0AAAAAXNSR0IArs4c6QAAA9xJREFUeAHtnE9rE1EUxZuEZFU3WRYRoRuh38JFQQqKm6zcSE2DKIJ+AfELVBBF8o9uXHUjFUTo9yi4KUiRLrNJVwlJPAfzwptpF8m8d+uMPYHpe2+Suffc3xwm09I7a2t6iYAIiIAIiIAIiIAIiIAIiIAIiIAIiIAIiIAIiIAI3AQCJcsiu93u7el0+gjbTqlU2pzNZhvIt26Zc4nYF9ByDi2n5XL5O7ajZrP5e4njMn3EBHC/398YjUbvUMhTFFLJpOyaDoLGCTQe1Gq1t7u7u+ex00YH3Ol0HsKxXyD6VmyxlvEAegg3P9nb2/sWM085ZrB2u/1qMpl8LRpcMqBmamcNMZlEczCdS4EQlzhpcMYJth4KOK7X62eNRuMiZgGrxjo8PFwfDAZ3oGkbmp5h20rFmFYqlcexnBwFMK+54/H4J13gxKKAEbY3EPoZ49Ttz9MIvWUY4znGfWw1pw16h9Vq9V6Ma3LCbS7BqiO/0NJw4YIHrVbrU17hskZqo0ZqxXzk6mYtrMmtQ8ZgB/NWDJeGXxC1uFvAl8VLCg8Rdt3H4tr7Al/OH11eAJ8A/N3QW7hgB/M+14cLYSe8LDihRRnnl7ITp5c1sTa3zjrGALzjJwfgHrZcXnN9nek5NVO7vx+AE7X57y07DwYMUZt+Mpz5Y39dpHlae7q2LLUEA4Yo/vq7ePFWbLEo2CStPV1blnKCASNp4m8L//o+NwsEd8wV2hO1uc+tMsYAvEq+G/dZATY+5QIswMYEjMPLwQJsTMA4vBwswMYEjMPLwQJsTMA4vBwswMYEjMPLwQJsTMA4vBwswMYEjMPLwQJsTMA4vBwswMYEjMPLwQJsTMA4vBwswMYEjMPLwQJsTMA4vBwswMYEjMPLwQJsTMA4vBxcAMCJvjf2oRlrNgt/hfZEbVkSBzsY/2af6O9lk18WIXk4Jq09XVsWjcGA8W/2p35iiNr210Wap7Wna8tSSzBgPhLATwxRbE8NjuvHvI45NVO7nytdm//esvNgEBBxhDM/cQkhcovtqW5dlHHeUrvoW2ZNrC1UfzBgdkIC6oEvBOt9dIDe9/fleU6t1OxrZE2hXZ6MFwyYQfgwC5zxIed8QVwN7bU/2J6KeZQcfyPH/Ult1Eit1OyisxbW5NYhY3Cvskuuxxk4EskxGmCG5cMs0H76HtPcujZZ/qXVFNfd12hk/3DpnYw7ogKmBjoZkPVImfkJie40PimED7NAfDaFL+4u5vlyN8w19qiZ2mMLjO5gX6Ae6+XT0FwEREAEREAEREAEREAEREAEREAEREAEREAEREAEROB/JvAH3B6HUCv6+1oAAAAASUVORK5CYII=';
+			var select =
+				'data:image/png;base64,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';
+
+			var selectbutton;
+
+			function closeCoinHeader() {
+				document.getElementById('coin_header').style.display = 'none';
+			}
+
+			function init() {
+
+				$.post("addfiles", function(result, status) {
+					result = JSON.parse(result);
+					data = result.data;
+					selectbutton = result.selectbutton;
+					createView(result.title, result.data, result.selectbutton);
+					document.getElementById('saveSelect').innerHTML = result.button;
+				});
+			}
+
+			function selectAll(uielement) {
+				var selectAll = false;
+				if (data != null && data.length > 0) {
+					if (data[0].isselect) {
+						for (var i = 0; i < data.length; i++) {
+							data[i].isselect = false;
+							selectAll = false;
+						}
+					} else {
+						for (var i = 0; i < data.length; i++) {
+							data[i].isselect = true;
+							selectAll = true;
+						}
+					}
+				}
+				if (selectAll) {
+					document.getElementById('saveSelect').classList.remove('unselect');
+				} else {
+					document.getElementById('saveSelect').classList.add('unselect');
+				}
+
+				var checkboxs = document.getElementsByClassName('check_box');
+				for (var i = 0; i < checkboxs.length; i++) {
+					checkboxs[i].src = data[i].isselect ? select : unselect;
+				}
+				uielement.innerHTML = selectAll ? selectbutton[1] : selectbutton[0];
+			}
+
+			function saveSelect() {
+				if (data == null) {
+					alert('Share Files is NULL');
+				}
+				var addFiles = [];
+				for (var i = 0; i < data.length; i++) {
+					if (data[i].isselect) {
+						addFiles[addFiles.length] = data[i];
+					}
+				}
+				$.post("savefiles", {
+					data: JSON.stringify(addFiles)
+				}, function(result, status) {
+					window.location.href = 'http://' + window.location.host;
+				});
+			}
+
+			function createView(title, data, selectbutton) {
+				var view = '<h3>' + title +
+					'</h3><button class="select_all" onclick="selectAll(this)" style="margin-right: 20px;">' + selectbutton[0] +
+					'</button><br><br><div class="category">';
+				for (var i = 0; i < data.length; i++) {
+					data[i].isselect = false;
+					view +=
+						'<div id="{index}" class="box" onclick="selectchange(this,{index})"><img src="getfile?path={thumbnail}&auth={auth}" class="thumbnail" /><p>{filename}</p><font>{createtime}</font><span>{filesize}</span><img class="check_box" src="{unselectui}"/></div>'
+						.format({
+							index: i,
+							url: data[i].url,
+							auth: data[i].auth,
+							thumbnail: data[i].thumbnail,
+							filename: data[i].filename,
+							createtime: timeStamp2String(data[i].createtime),
+							filesize: formatFileSize(data[i].filesize),
+							unselectui: unselect,
+							isselect: data[i].isselect
+						});
+				}
+				view += '</div>';
+				document.getElementById('content').innerHTML += view;
+			}
+
+			function selectchange(uielement, index) {
+				data[index].isselect = !data[index].isselect;
+
+				uielement.getElementsByClassName('check_box')[0].src = data[index].isselect ? select : unselect;
+				var addunselect = true;
+				for (var i = 0; i < data.length; i++) {
+					if (data[i].isselect) {
+						document.getElementById('saveSelect').classList.remove('unselect');
+						addunselect = false;
+					}
+				}
+				if (addunselect)
+					document.getElementById('saveSelect').classList.add('unselect');
+			}
+		</script>
+		<!-- 工具类放在底部 -->
+		<script>
+			function timeStamp2String(time) {
+				var datetime = new Date();
+				datetime.setTime(time);
+				var year = datetime.getFullYear();
+				var month = datetime.getMonth() + 1 < 10 ? "0" + (datetime.getMonth() + 1) : datetime.getMonth() + 1;
+				var date = datetime.getDate() < 10 ? "0" + datetime.getDate() : datetime.getDate();
+				var hour = datetime.getHours() < 10 ? "0" + datetime.getHours() : datetime.getHours();
+				var minute = datetime.getMinutes() < 10 ? "0" + datetime.getMinutes() : datetime.getMinutes();
+				var second = datetime.getSeconds() < 10 ? "0" + datetime.getSeconds() : datetime.getSeconds();
+				return year + "-" + month + "-" + date + " " + hour + ":" + minute + ":" + second;
+			}
+
+			function formatFileSize(fileSize) {
+				if (fileSize < 1024) {
+					return fileSize + 'B';
+				} else if (fileSize < (1024 * 1024)) {
+					var temp = fileSize / 1024;
+					temp = temp.toFixed(2);
+					return temp + 'KB';
+				} else if (fileSize < (1024 * 1024 * 1024)) {
+					var temp = fileSize / (1024 * 1024);
+					temp = temp.toFixed(2);
+					return temp + 'MB';
+				} else {
+					var temp = fileSize / (1024 * 1024 * 1024);
+					temp = temp.toFixed(2);
+					return temp + 'GB';
+				}
+			}
+
+			function getQueryString(name) {
+				var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+				var r = window.location.search.substr(1).match(reg);
+				if (r != null)
+					return decodeURIComponent(r[2]);
+				return '';
+			}
+		</script>
+	</body>
+</html>

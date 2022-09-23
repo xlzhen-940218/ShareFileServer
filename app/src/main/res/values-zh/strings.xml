@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="add_files">添加文件</string>
+    <string name="app_name">文件分享服务</string>
+    <string name="get_wifiname_toast">获取wifi名称需要获取定位权限</string>
+    <string name="network_change_listener">网络切换监听服务</string>
+    <string name="notification_content">分享文件时请不要关闭该服务</string>
+    <string name="notification_title">正在保障分享服务正常运转</string>
+    <string name="please_install_file_explorer">请安装文件管理器</string>
+    <string name="please_select_files">请选择需要分享的多个文件</string>
+    <string name="server_name">服务器运行保障服务</string>
+
+</resources>

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<title>Share Files Management</title>
+		<link rel="stylesheet" type="text/css" href="css/app.css">
+		</link>
+	</head>
+	<body style="margin: 0 auto;" onload="init()">
+		
+		<header id="useguide">
+			
+		</header>
+		<div id="content">
+
+		</div>
+		<div id="note" class="category" style="padding-bottom: 60px;">
+			<a class="box" style="background: #FFFFFF;" href="./sharednote.html"><img src="imgs/notepad.png" class="thumbnail">
+				<p id="share_note_title"></p>
+				<font id="share_note_description"></font>
+			</a>
+		</div>
+		<div id="deleteSelect" class="download_button unselect" onclick="deleteSelect()"></div>
+		<div id="host_qrcode" style="width: 100px;height: 100px;" >
+		</div>
+		
+		<script src="js/jquery-3.5.1.min.js"></script>
+		<script src="js/string.js"></script>
+		<script src="js/qrcode.js"></script>
+		<!-- 创建View -->
+		<script>
+			var unselect =
+				'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFgAAABYCAYAAABxlTA0AAAAAXNSR0IArs4c6QAAA9xJREFUeAHtnE9rE1EUxZuEZFU3WRYRoRuh38JFQQqKm6zcSE2DKIJ+AfELVBBF8o9uXHUjFUTo9yi4KUiRLrNJVwlJPAfzwptpF8m8d+uMPYHpe2+Suffc3xwm09I7a2t6iYAIiIAIiIAIiIAIiIAIiIAIiIAIiIAIiIAIiIAI3AQCJcsiu93u7el0+gjbTqlU2pzNZhvIt26Zc4nYF9ByDi2n5XL5O7ajZrP5e4njMn3EBHC/398YjUbvUMhTFFLJpOyaDoLGCTQe1Gq1t7u7u+ex00YH3Ol0HsKxXyD6VmyxlvEAegg3P9nb2/sWM085ZrB2u/1qMpl8LRpcMqBmamcNMZlEczCdS4EQlzhpcMYJth4KOK7X62eNRuMiZgGrxjo8PFwfDAZ3oGkbmp5h20rFmFYqlcexnBwFMK+54/H4J13gxKKAEbY3EPoZ49Ttz9MIvWUY4znGfWw1pw16h9Vq9V6Ma3LCbS7BqiO/0NJw4YIHrVbrU17hskZqo0ZqxXzk6mYtrMmtQ8ZgB/NWDJeGXxC1uFvAl8VLCg8Rdt3H4tr7Al/OH11eAJ8A/N3QW7hgB/M+14cLYSe8LDihRRnnl7ITp5c1sTa3zjrGALzjJwfgHrZcXnN9nek5NVO7vx+AE7X57y07DwYMUZt+Mpz5Y39dpHlae7q2LLUEA4Yo/vq7ePFWbLEo2CStPV1blnKCASNp4m8L//o+NwsEd8wV2hO1uc+tMsYAvEq+G/dZATY+5QIswMYEjMPLwQJsTMA4vBwswMYEjMPLwQJsTMA4vBwswMYEjMPLwQJsTMA4vBwswMYEjMPLwQJsTMA4vBwswMYEjMPLwQJsTMA4vBwswMYEjMPLwQJsTMA4vBwswMYEjMPLwQJsTMA4vBxcAMCJvjf2oRlrNgt/hfZEbVkSBzsY/2af6O9lk18WIXk4Jq09XVsWjcGA8W/2p35iiNr210Wap7Wna8tSSzBgPhLATwxRbE8NjuvHvI45NVO7nytdm//esvNgEBBxhDM/cQkhcovtqW5dlHHeUrvoW2ZNrC1UfzBgdkIC6oEvBOt9dIDe9/fleU6t1OxrZE2hXZ6MFwyYQfgwC5zxIed8QVwN7bU/2J6KeZQcfyPH/Ult1Eit1OyisxbW5NYhY3Cvskuuxxk4EskxGmCG5cMs0H76HtPcujZZ/qXVFNfd12hk/3DpnYw7ogKmBjoZkPVImfkJie40PimED7NAfDaFL+4u5vlyN8w19qiZ2mMLjO5gX6Ae6+XT0FwEREAEREAEREAEREAEREAEREAEREAEREAEREAEROB/JvAH3B6HUCv6+1oAAAAASUVORK5CYII=';
+			var select =
+				'data:image/png;base64,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';
+			var data;
+
+			function init() {
+				if (getQueryString('type').length > 0) {
+					$.post("get", {
+						data: JSON.stringify({
+							type: getQueryString('type')
+						})
+					}, function(result, status) {
+						result = JSON.parse(result);
+						data = result.data;
+						createView(result.title, result.data, false);
+						document.getElementById('deleteSelect').innerHTML = result.button;
+						document.getElementById('note').style.visibility = 'collapse';
+					});
+				} else {
+					$.post("get", function(result, status) {
+						result = JSON.parse(result);
+						data = result.data;
+						createView(result.title, result.data, true);
+						document.getElementById('note').style.visibility = 'visible';
+					});
+
+					$.post("getuseguide", function(result, status) {
+						result = JSON.parse(result);
+						document.getElementById('useguide').innerHTML = '<h2>{title}</h2><br>{wifi}<br><br>{ip}<br><br>{scanqrcode}<br><br><div id="qrcode" style="text-align: center;"></div>'.format(result.data);
+						
+						new QRCode(document.getElementById("qrcode"), {
+							text:result.data.address,
+							width:200,
+							height:200
+						});
+					});
+				}
+
+				$.post("getShareNoteTitle", function(result, status) {
+					result = JSON.parse(result);
+					document.getElementById('share_note_title').innerHTML = result.data;
+				});
+
+				$.post("getShareNoteDescription", function(result, status) {
+					result = JSON.parse(result);
+					document.getElementById('share_note_description').innerHTML = result.data;
+				});
+
+			}
+
+			function closeCoinHeader() {
+				document.getElementById('useguide').style.display = 'none';
+			}
+
+
+			function deleteSelect() {
+				if (data == null) {
+					alert('Error');
+				}
+				var deleteFiles = [];
+				for (var i = 0; i < data.length; i++) {
+					if (data[i].isselect) {
+						deleteFiles[deleteFiles.length] = {
+							url: data[i].url
+						};
+					}
+				}
+				$.post("deletefiles", {
+					data: JSON.stringify(deleteFiles)
+				}, function(result, status) {
+					result = JSON.parse(result);
+					alert(result.message);
+					init();
+				});
+			}
+
+
+			function createView(title, data, home) {
+				document.getElementById('content').innerHTML = '';
+				var view = '<h3>' + title + '</h3><div class="category">';
+				for (var i = 0; i < data.length; i++) {
+					data[i].isselect = false;
+					view +=
+						'<div class="box" id="{index}" onclick="selectchange(this,{index})"  href="{url}"><img src="getfile?path={thumbnail}&auth={thumbauth}" class="thumbnail" /><p>{filename}</p><font>{createtime}</font><span>{filesize}</span><img class="check_box" src="{unselectui}" style="visibility:{visibility};"/></div>'
+						.format({
+							index: i,
+							thumbauth: data[i].thumbauth,
+							url: data[i].url.startsWith('./') ? data[i].url : 'getfile?path=' + data[i].url + '&auth=' + data[i].auth,
+							thumbnail: data[i].thumbnail,
+							filename: data[i].filename,
+							createtime: timeStamp2String(data[i].createtime),
+							filesize: formatFileSize(data[i].filesize),
+							unselectui: unselect,
+							isselect: data[i].isselect,
+							visibility: home ? 'hidden' : 'visible'
+						});
+				}
+				view += '</div>';
+				document.getElementById('content').innerHTML += view;
+				document.getElementById('deleteSelect').style.visibility = home ? 'hidden' : 'visible';
+			}
+
+			function selectchange(uielement, index) {
+				if (document.getElementById('deleteSelect').style.visibility == 'hidden') {
+					window.location.href = data[index].url;
+				}
+				data[index].isselect = !data[index].isselect;
+
+				uielement.getElementsByClassName('check_box')[0].src = data[index].isselect ? select : unselect;
+				var addunselect = true;
+				for (var i = 0; i < data.length; i++) {
+					if (data[i].isselect) {
+						document.getElementById('deleteSelect').classList.remove('unselect');
+						addunselect = false;
+					}
+				}
+				if (addunselect)
+					document.getElementById('deleteSelect').classList.add('unselect');
+			}
+		</script>
+		<!-- 工具类放在底部 -->
+		<script>
+			function timeStamp2String(time) {
+				var datetime = new Date();
+				datetime.setTime(time);
+				var year = datetime.getFullYear();
+				var month = datetime.getMonth() + 1 < 10 ? "0" + (datetime.getMonth() + 1) : datetime.getMonth() + 1;
+				var date = datetime.getDate() < 10 ? "0" + datetime.getDate() : datetime.getDate();
+				var hour = datetime.getHours() < 10 ? "0" + datetime.getHours() : datetime.getHours();
+				var minute = datetime.getMinutes() < 10 ? "0" + datetime.getMinutes() : datetime.getMinutes();
+				var second = datetime.getSeconds() < 10 ? "0" + datetime.getSeconds() : datetime.getSeconds();
+				return year + "-" + month + "-" + date + " " + hour + ":" + minute + ":" + second;
+			}
+
+			function formatFileSize(fileSize) {
+				if (fileSize == 0) {
+					return '';
+				}
+				if (fileSize < 1024) {
+					return fileSize + 'B';
+				} else if (fileSize < (1024 * 1024)) {
+					var temp = fileSize / 1024;
+					temp = temp.toFixed(2);
+					return temp + 'KB';
+				} else if (fileSize < (1024 * 1024 * 1024)) {
+					var temp = fileSize / (1024 * 1024);
+					temp = temp.toFixed(2);
+					return temp + 'MB';
+				} else {
+					var temp = fileSize / (1024 * 1024 * 1024);
+					temp = temp.toFixed(2);
+					return temp + 'GB';
+				}
+			}
+
+			function getQueryString(name) {
+				var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+				var r = window.location.search.substr(1).match(reg);
+				if (r != null)
+					return decodeURIComponent(r[2]);
+				return '';
+			}
+		</script>
+	</body>
+</html>
