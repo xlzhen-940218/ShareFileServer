@@ -1,0 +1,137 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.xlzhen.sharefileserver"
+4    android:versionCode="7"
+5    android:versionName="1.6" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="24"
+8-->C:\Users\xiong\AndroidStudioProjects\ShareFileServer\app\src\main\AndroidManifest.xml
+9        android:targetSdkVersion="32" />
+9-->C:\Users\xiong\AndroidStudioProjects\ShareFileServer\app\src\main\AndroidManifest.xml
+10
+11    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+11-->C:\Users\xiong\AndroidStudioProjects\ShareFileServer\app\src\main\AndroidManifest.xml:5:5-76
+11-->C:\Users\xiong\AndroidStudioProjects\ShareFileServer\app\src\main\AndroidManifest.xml:5:22-73
+12    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+12-->C:\Users\xiong\AndroidStudioProjects\ShareFileServer\app\src\main\AndroidManifest.xml:6:5-79
+12-->C:\Users\xiong\AndroidStudioProjects\ShareFileServer\app\src\main\AndroidManifest.xml:6:22-76
+13    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+13-->C:\Users\xiong\AndroidStudioProjects\ShareFileServer\app\src\main\AndroidManifest.xml:7:5-79
+13-->C:\Users\xiong\AndroidStudioProjects\ShareFileServer\app\src\main\AndroidManifest.xml:7:22-76
+14    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+14-->C:\Users\xiong\AndroidStudioProjects\ShareFileServer\app\src\main\AndroidManifest.xml:8:5-76
+14-->C:\Users\xiong\AndroidStudioProjects\ShareFileServer\app\src\main\AndroidManifest.xml:8:22-73
+15    <uses-permission android:name="android.permission.INTERNET" />
+15-->C:\Users\xiong\AndroidStudioProjects\ShareFileServer\app\src\main\AndroidManifest.xml:9:5-67
+15-->C:\Users\xiong\AndroidStudioProjects\ShareFileServer\app\src\main\AndroidManifest.xml:9:22-64
+16    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+16-->C:\Users\xiong\AndroidStudioProjects\ShareFileServer\app\src\main\AndroidManifest.xml:10:5-80
+16-->C:\Users\xiong\AndroidStudioProjects\ShareFileServer\app\src\main\AndroidManifest.xml:10:22-77
+17    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+17-->C:\Users\xiong\AndroidStudioProjects\ShareFileServer\app\src\main\AndroidManifest.xml:11:5-77
+17-->C:\Users\xiong\AndroidStudioProjects\ShareFileServer\app\src\main\AndroidManifest.xml:11:22-74
+18    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
+18-->C:\Users\xiong\AndroidStudioProjects\ShareFileServer\app\src\main\AndroidManifest.xml:12:5-82
+18-->C:\Users\xiong\AndroidStudioProjects\ShareFileServer\app\src\main\AndroidManifest.xml:12:22-79
+19
+20    <application
+20-->C:\Users\xiong\AndroidStudioProjects\ShareFileServer\app\src\main\AndroidManifest.xml:14:5-56:19
+21        android:name="com.xlzhen.sharefileserver.Application"
+21-->C:\Users\xiong\AndroidStudioProjects\ShareFileServer\app\src\main\AndroidManifest.xml:15:9-62
+22        android:allowBackup="true"
+22-->C:\Users\xiong\AndroidStudioProjects\ShareFileServer\app\src\main\AndroidManifest.xml:16:9-35
+23        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+23-->C:\Users\xiong\AndroidStudioProjects\ShareFileServer\app\src\main\AndroidManifest.xml:17:9-77
+24        android:debuggable="true"
+25        android:extractNativeLibs="false"
+26        android:icon="@mipmap/ic_launcher"
+26-->C:\Users\xiong\AndroidStudioProjects\ShareFileServer\app\src\main\AndroidManifest.xml:18:9-43
+27        android:label="@string/app_name"
+27-->C:\Users\xiong\AndroidStudioProjects\ShareFileServer\app\src\main\AndroidManifest.xml:19:9-41
+28        android:requestLegacyExternalStorage="true"
+28-->C:\Users\xiong\AndroidStudioProjects\ShareFileServer\app\src\main\AndroidManifest.xml:20:9-52
+29        android:supportsRtl="true"
+29-->C:\Users\xiong\AndroidStudioProjects\ShareFileServer\app\src\main\AndroidManifest.xml:21:9-35
+30        android:testOnly="true"
+31        android:theme="@style/Theme.ShareFileServer"
+31-->C:\Users\xiong\AndroidStudioProjects\ShareFileServer\app\src\main\AndroidManifest.xml:22:9-53
+32        android:usesCleartextTraffic="true" >
+32-->C:\Users\xiong\AndroidStudioProjects\ShareFileServer\app\src\main\AndroidManifest.xml:23:9-44
+33        <activity
+33-->C:\Users\xiong\AndroidStudioProjects\ShareFileServer\app\src\main\AndroidManifest.xml:24:9-41:20
+34            android:name="com.xlzhen.sharefileserver.MainActivity"
+34-->C:\Users\xiong\AndroidStudioProjects\ShareFileServer\app\src\main\AndroidManifest.xml:25:13-67
+35            android:exported="true" >
+35-->C:\Users\xiong\AndroidStudioProjects\ShareFileServer\app\src\main\AndroidManifest.xml:26:13-36
+36            <intent-filter>
+36-->C:\Users\xiong\AndroidStudioProjects\ShareFileServer\app\src\main\AndroidManifest.xml:27:13-30:29
+37                <action android:name="android.intent.action.MAIN" />
+37-->C:\Users\xiong\AndroidStudioProjects\ShareFileServer\app\src\main\AndroidManifest.xml:28:17-69
+37-->C:\Users\xiong\AndroidStudioProjects\ShareFileServer\app\src\main\AndroidManifest.xml:28:25-66
+38
+39                <category android:name="android.intent.category.LAUNCHER" />
+39-->C:\Users\xiong\AndroidStudioProjects\ShareFileServer\app\src\main\AndroidManifest.xml:29:17-77
+39-->C:\Users\xiong\AndroidStudioProjects\ShareFileServer\app\src\main\AndroidManifest.xml:29:27-74
+40            </intent-filter>
+41            <intent-filter>
+41-->C:\Users\xiong\AndroidStudioProjects\ShareFileServer\app\src\main\AndroidManifest.xml:31:13-35:29
+42                <action android:name="android.intent.action.SEND" />
+42-->C:\Users\xiong\AndroidStudioProjects\ShareFileServer\app\src\main\AndroidManifest.xml:32:17-69
+42-->C:\Users\xiong\AndroidStudioProjects\ShareFileServer\app\src\main\AndroidManifest.xml:32:25-66
+43
+44                <category android:name="android.intent.category.DEFAULT" />
+44-->C:\Users\xiong\AndroidStudioProjects\ShareFileServer\app\src\main\AndroidManifest.xml:33:17-76
+44-->C:\Users\xiong\AndroidStudioProjects\ShareFileServer\app\src\main\AndroidManifest.xml:33:27-73
+45
+46                <data android:mimeType="*/*" />
+46-->C:\Users\xiong\AndroidStudioProjects\ShareFileServer\app\src\main\AndroidManifest.xml:34:17-48
+46-->C:\Users\xiong\AndroidStudioProjects\ShareFileServer\app\src\main\AndroidManifest.xml:34:23-45
+47            </intent-filter>
+48            <intent-filter>
+48-->C:\Users\xiong\AndroidStudioProjects\ShareFileServer\app\src\main\AndroidManifest.xml:36:13-40:29
+49                <action android:name="android.intent.action.SEND_MULTIPLE" />
+49-->C:\Users\xiong\AndroidStudioProjects\ShareFileServer\app\src\main\AndroidManifest.xml:37:17-78
+49-->C:\Users\xiong\AndroidStudioProjects\ShareFileServer\app\src\main\AndroidManifest.xml:37:25-75
+50
+51                <category android:name="android.intent.category.DEFAULT" />
+51-->C:\Users\xiong\AndroidStudioProjects\ShareFileServer\app\src\main\AndroidManifest.xml:33:17-76
+51-->C:\Users\xiong\AndroidStudioProjects\ShareFileServer\app\src\main\AndroidManifest.xml:33:27-73
+52
+53                <data android:mimeType="*/*" />
+53-->C:\Users\xiong\AndroidStudioProjects\ShareFileServer\app\src\main\AndroidManifest.xml:34:17-48
+53-->C:\Users\xiong\AndroidStudioProjects\ShareFileServer\app\src\main\AndroidManifest.xml:34:23-45
+54            </intent-filter>
+55        </activity>
+56
+57        <service
+57-->C:\Users\xiong\AndroidStudioProjects\ShareFileServer\app\src\main\AndroidManifest.xml:42:9-44:51
+58            android:name="com.xlzhen.sharefileserver.service.ServerRunService"
+58-->C:\Users\xiong\AndroidStudioProjects\ShareFileServer\app\src\main\AndroidManifest.xml:43:13-79
+59            android:label="@string/server_name" />
+59-->C:\Users\xiong\AndroidStudioProjects\ShareFileServer\app\src\main\AndroidManifest.xml:44:13-48
+60
+61        <provider
+61-->C:\Users\xiong\AndroidStudioProjects\ShareFileServer\app\src\main\AndroidManifest.xml:45:9-55:20
+62            android:name="androidx.startup.InitializationProvider"
+62-->C:\Users\xiong\AndroidStudioProjects\ShareFileServer\app\src\main\AndroidManifest.xml:46:13-67
+63            android:authorities="com.xlzhen.sharefileserver.androidx-startup"
+63-->C:\Users\xiong\AndroidStudioProjects\ShareFileServer\app\src\main\AndroidManifest.xml:47:13-78
+64            android:exported="false" >
+64-->C:\Users\xiong\AndroidStudioProjects\ShareFileServer\app\src\main\AndroidManifest.xml:48:13-37
+65            <meta-data
+65-->C:\Users\xiong\AndroidStudioProjects\ShareFileServer\app\src\main\AndroidManifest.xml:49:13-51:52
+66                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+66-->C:\Users\xiong\AndroidStudioProjects\ShareFileServer\app\src\main\AndroidManifest.xml:50:17-75
+67                android:value="androidx.startup" />
+67-->C:\Users\xiong\AndroidStudioProjects\ShareFileServer\app\src\main\AndroidManifest.xml:51:17-49
+68            <meta-data
+68-->C:\Users\xiong\AndroidStudioProjects\ShareFileServer\app\src\main\AndroidManifest.xml:52:13-54:52
+69                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+69-->C:\Users\xiong\AndroidStudioProjects\ShareFileServer\app\src\main\AndroidManifest.xml:53:17-78
+70                android:value="androidx.startup" />
+70-->C:\Users\xiong\AndroidStudioProjects\ShareFileServer\app\src\main\AndroidManifest.xml:54:17-49
+71        </provider>
+72    </application>
+73
+74</manifest>

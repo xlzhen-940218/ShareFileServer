@@ -1,0 +1,152 @@
+.header {
+	background: #1B93F0;
+	color: white;
+	font-size: 1rem;
+	padding: 0.625rem;
+	font-family: sans-serif;
+	margin: 0rem;
+}
+
+header {
+	font-size: 16px;
+	background-color: #1B93F0;
+	font-weight: 800;
+	color: #F8FBFC;
+	padding: 10px;
+}
+
+h3 {
+	color: #333333;
+	font-family: sans-serif;
+	padding: 0.625rem;
+	margin: 0rem;
+}
+
+.select_all {
+	float: right;
+	font-size: 16px;
+	color: #1B93F0;
+	margin: 5px, 5px, 5px, 5px;
+}
+
+p {
+	color: #555555;
+	font-family: sans-serif;
+	font-size: 0.875rem;
+	position: absolute;
+	top: 0rem;
+	left: 5rem;
+	right: 2rem;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
+}
+
+font {
+	color: #979797;
+	font-family: sans-serif;
+	font-size: 0.875rem;
+	position: absolute;
+	bottom: 0.7rem;
+	left: 5rem;
+}
+
+span {
+	color: #979797;
+	font-family: sans-serif;
+	font-size: 0.875rem;
+	position: absolute;
+	bottom: 0.7rem;
+	right: 2rem;
+}
+
+.box {
+	background: #F0FBFC;
+	padding: 0.625rem;
+	position: relative;
+	width: 25rem;
+}
+
+.box:active {
+	background: #F8FBFC;
+}
+
+.box:nth-of-type(even) {
+	background: #FFFFFF;
+}
+
+.all_check_box {
+	color: #ffffff;
+	font-family: sans-serif;
+	margin: 0rem;
+	position: absolute;
+	right: 0rem;
+	top: 0rem;
+	bottom: 0rem;
+	padding: 0.7rem;
+	font-size: 0.875rem;
+}
+
+.all_check_box:active {
+	background: #4B93F0;
+}
+
+.check_box {
+	height: 2rem;
+	position: absolute;
+	top: 1.8rem;
+	right: 0.2rem;
+}
+
+.category {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.thumbnail {
+	width: 4rem;
+	height: 4rem;
+	object-fit: cover
+}
+
+.download_button {
+	position: fixed;
+	left: 0rem;
+	bottom: 1rem;
+	width: 16rem;
+	right: 0rem;
+	margin: 0 auto;
+	height: 36px;
+	color: white;
+	padding-top: 6px;
+	font-family: sans-serif;
+	font-size: 1.125rem;
+	border-radius: 1.25rem;
+	text-align: center;
+	background: #1B93F0;
+}
+
+.unselect {
+	background: #CCCCCC;
+}
+
+.download_button:active {
+	background: #6693F0;
+}
+
+.conn_download a {
+	display: inline-block;
+	width: 40%;
+	background: #313030;
+	border-radius: 3px;
+	color: white;
+	margin: 10px 5px;
+	height: 30px;
+	line-height: 30px;
+	font-size: 12px;
+	padding: 0 10px;
+	text-align: center;
+	box-sizing: border-box;
+}
