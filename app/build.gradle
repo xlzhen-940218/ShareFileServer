@@ -7,7 +7,7 @@ android {
 
     defaultConfig {
         applicationId 'com.xlzhen.sharefileserver'
-        minSdk 24
+        minSdk 21
         targetSdk 32
         versionCode 7
         versionName "1.6"

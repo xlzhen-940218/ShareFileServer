@@ -155,6 +155,7 @@ function addfiles() {
 	result.message = paths.length > 0 ? "OK" : "Not Share Files";
 	result.button = getSaveButtonName();
 	result.selectbutton = [getSelectAllName(), getUnSelectAllName()];
+	console.log("add file success");
 	return JSON.stringify(result);
 }
 

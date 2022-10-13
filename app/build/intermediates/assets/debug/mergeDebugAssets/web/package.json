@@ -1,8 +1,0 @@
-{
-  "logo": "imgs/share_files.png",
-  "name": "Share File Server",
-  "version": "1.0.0",
-  "description": "this is Share File Server",
-  "main": "server.js",
-  "author": "xlzhen <xionglongzhen@gmail.com>"
-}

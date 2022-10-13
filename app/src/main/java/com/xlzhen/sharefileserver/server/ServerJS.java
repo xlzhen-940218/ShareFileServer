@@ -72,27 +72,27 @@ public class ServerJS {
         return serverJS;
     }
 
-    public synchronized NanoHTTPD.Response executeJSServerAPI(String str, String str2, String str3, boolean z, Map<String, String> map) {
+    public synchronized NanoHTTPD.Response executeJSServerAPI(String serverPath, String serverJs, String substring, boolean uploadFile, Map<String, String> params) {
         JSONException e4;
         FileNotFoundException e2;
         IOException e3;
         String string;
         String string2;
-        Matcher matcher = Pattern.compile("function.*?" + str3 + ".*?\\((.*?)\\)").matcher(str2);
+        Matcher matcher = Pattern.compile("function.*?" + substring + ".*?\\((.*?)\\)").matcher(serverJs);
         if (!matcher.find()) {
             InputStream inputStream = null;
             return NanoHTTPD.newChunkedResponse(NanoHTTPD.Response.Status.NOT_FOUND, "application/json; charset=utf-8", null);
         }
         String[] split = matcher.group(1).split(",");
-        if (split.length > map.size()) {
+        if (split.length > params.size()) {
             for (String str4 : split) {
-                if (!map.containsKey(str4.trim()) && str4.trim().length() > 0) {
-                    map.put(str4.trim(), null);
+                if (!params.containsKey(str4.trim()) && str4.trim().length() > 0) {
+                    params.put(str4.trim(), null);
                 }
             }
         }
         CountDownLatch countDownLatch = new CountDownLatch(1);
-        this.jsEvaluator.callFunction(str2, new JsCallback() {
+        this.jsEvaluator.callFunction(serverJs, new JsCallback() {
             @Override
             public void onResult(String str) {
                 jsResult= str;//拿到结果
@@ -104,9 +104,9 @@ public class ServerJS {
                 jsResult= str;//拿到结果
                 countDownLatch.countDown();//释放锁
             }
-        }, str3, map);
+        }, substring, params);
         try {
-            countDownLatch.await(z ? 3600L : 10L, TimeUnit.SECONDS);
+            countDownLatch.await(uploadFile ? 3600L : 10L, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -124,9 +124,9 @@ public class ServerJS {
                         string2 = jSONObject.getString("filename");
                         try {
                             if (!string.contains("storage/") && !string.contains("data/app")) {
-                                return NanoHTTPD.newChunkedResponse(NanoHTTPD.Response.Status.OK, string.endsWith(".css") ? "text/css" : "*/*", Application.getContext().getAssets().open(str + "/" + string));
+                                return NanoHTTPD.newChunkedResponse(NanoHTTPD.Response.Status.OK, string.endsWith(".css") ? "text/css" : "*/*", Application.getContext().getAssets().open(serverPath + "/" + string));
                             }
-                            String a = MimeTypeConvert.m107a(string.substring(string.lastIndexOf(".") + 1));
+                            String a = MimeTypeConvert.getSuffix(string.substring(string.lastIndexOf(".") + 1));
                             Log.i("Play MimeType", a);
                             if (a.startsWith("image")) {
                                 return NanoHTTPD.newChunkedResponse(NanoHTTPD.Response.Status.OK, a, new FileInputStream(string));

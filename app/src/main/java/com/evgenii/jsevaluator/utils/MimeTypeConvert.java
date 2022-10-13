@@ -8,7 +8,7 @@ import java.util.Map;
 public class MimeTypeConvert {
     public static Map<String, String> mimeTypeMaps;
 
-    public static String m107a(String str) {
+    public static String getSuffix(String str) {
         if (mimeTypeMaps == null) {
             mimeTypeMaps = new HashMap<>();
             mimeTypeMaps.put("3gp", "video/3gpp");
@@ -430,6 +430,6 @@ public class MimeTypeConvert {
             mimeTypeMaps.put("m4a", "audio/mp4a-latm");
             mimeTypeMaps.put("m4b", "audio/mp4a-latm");
         }
-        return mimeTypeMaps.getOrDefault(str.toLowerCase(), str);
+        return mimeTypeMaps.get(str.toLowerCase());
     }
 }

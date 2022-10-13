@@ -37,7 +37,17 @@
 			var select =
 				'data:image/png;base64,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';
 			var data;
+			function loadShare() {
+				$.post("getShareNoteTitle", function(result, status) {
+					result = JSON.parse(result);
+					document.getElementById('share_note_title').innerHTML = result.data;
+				});
 
+				$.post("getShareNoteDescription", function(result, status) {
+					result = JSON.parse(result);
+					document.getElementById('share_note_description').innerHTML = result.data;
+				});
+			}
 			function init() {
 				if (getQueryString('type').length > 0) {
 					$.post("get", {
@@ -50,7 +60,9 @@
 						createView(result.title, result.data, false);
 						document.getElementById('deleteSelect').innerHTML = result.button;
 						document.getElementById('note').style.visibility = 'collapse';
+						loadShare();
 					});
+
 				} else {
 					$.post("get", function(result, status) {
 						result = JSON.parse(result);
@@ -71,15 +83,7 @@
 					});
 				}
 
-				$.post("getShareNoteTitle", function(result, status) {
-					result = JSON.parse(result);
-					document.getElementById('share_note_title').innerHTML = result.data;
-				});
 
-				$.post("getShareNoteDescription", function(result, status) {
-					result = JSON.parse(result);
-					document.getElementById('share_note_description').innerHTML = result.data;
-				});
 
 			}
 

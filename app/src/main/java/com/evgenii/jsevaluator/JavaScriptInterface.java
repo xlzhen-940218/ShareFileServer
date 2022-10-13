@@ -77,7 +77,7 @@ public class JavaScriptInterface {
 
     @JavascriptInterface
     public int getFileType(String str) {
-        String a = MimeTypeConvert.m107a(str.substring(str.lastIndexOf(".") + 1));
+        String a = MimeTypeConvert.getSuffix(str.substring(str.lastIndexOf(".") + 1));
         if (a.startsWith("video")) {
             return 1;
         }
@@ -145,35 +145,37 @@ public class JavaScriptInterface {
     }
 
     @JavascriptInterface
-    public String getThumbnail(String str) {
-        String a = MimeTypeConvert.m107a(str.substring(str.lastIndexOf(".") + 1));
-        if (a.equalsIgnoreCase(NanoHTTPD.MIME_PLAINTEXT) || a.endsWith("chm")) {
+    public String getThumbnail(String filePath) {
+        if(!new File(filePath).exists())
+            return "./imgs/unknown.png";
+        String suffix = MimeTypeConvert.getSuffix(filePath.substring(filePath.lastIndexOf(".") + 1));
+        if (suffix.equalsIgnoreCase(NanoHTTPD.MIME_PLAINTEXT) || suffix.endsWith("chm")) {
             return "./imgs/txt.png";
         }
-        if (a.endsWith("pdf")) {
+        if (suffix.endsWith("pdf")) {
             return "./imgs/pdf.png";
         }
-        if (a.endsWith("word") || a.endsWith("document")) {
+        if (suffix.endsWith("word") || suffix.endsWith("document")) {
             return "./imgs/word.png";
         }
-        if (a.endsWith("powerpoint") || a.contains("officedocument")) {
+        if (suffix.endsWith("powerpoint") || suffix.contains("officedocument")) {
             return "./imgs/ppt.png";
         }
-        if (a.endsWith("excel")) {
+        if (suffix.endsWith("excel")) {
             return "./imgs/excel.png";
         }
-        if (a.startsWith("audio") || a.startsWith("video")) {
+        if (suffix.startsWith("audio") || suffix.startsWith("video")) {
             File externalFilesDir = Application.getContext().getExternalFilesDir("thumbnail");
             if (!externalFilesDir.exists()) {
                 externalFilesDir.mkdirs();
             }
             String absolutePath = externalFilesDir.getAbsolutePath();
-            File file = new File(absolutePath, getFileName(str) + ".jpg");
+            File file = new File(absolutePath, getFileName(filePath) + ".jpg");
             if (file.exists()) {
                 return file.getAbsolutePath();
             }
             MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
-            mediaMetadataRetriever.setDataSource(str);
+            mediaMetadataRetriever.setDataSource(filePath);
             Bitmap frameAtTime = mediaMetadataRetriever.getFrameAtTime();
             if (frameAtTime == null) {
                 try {
@@ -198,17 +200,17 @@ public class JavaScriptInterface {
                 e2.printStackTrace();
             }
             return file.getAbsolutePath();
-        } else if (a.startsWith("image")) {
+        } else if (suffix.startsWith("image")) {
             File externalFilesDir2 = Application.getContext().getExternalFilesDir("thumbnail");
             if (!externalFilesDir2.exists()) {
                 externalFilesDir2.mkdirs();
             }
-            File file2 = new File(externalFilesDir2.getAbsolutePath(), getFileName(str));
+            File file2 = new File(externalFilesDir2.getAbsolutePath(), getFileName(filePath));
             if (file2.exists()) {
                 return file2.getAbsolutePath();
             }
             try {
-                Bitmap createScaledBitmap2 = Bitmap.createScaledBitmap(BitmapFactory.decodeStream(new FileInputStream(str)), 100, 100, true);
+                Bitmap createScaledBitmap2 = Bitmap.createScaledBitmap(BitmapFactory.decodeStream(new FileInputStream(filePath)), 100, 100, true);
                 ByteArrayOutputStream byteArrayOutputStream2 = new ByteArrayOutputStream();
                 createScaledBitmap2.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream2);
                 try {
@@ -222,9 +224,12 @@ public class JavaScriptInterface {
                 return file2.getAbsolutePath();
             } catch (FileNotFoundException e4) {
                 e4.printStackTrace();
-                return str;
+                return filePath;
+            }catch (NullPointerException ex){
+                ex.printStackTrace();
+                return "./imgs/unknown.png";
             }
-        } else if (!a.equalsIgnoreCase("application/vnd.android.package-archive")) {
+        } else if (!suffix.equalsIgnoreCase("application/vnd.android.package-archive")) {
             return "";
         } else {
             File externalFilesDir3 = Application.getContext().getExternalFilesDir("thumbnail");
@@ -232,12 +237,12 @@ public class JavaScriptInterface {
                 externalFilesDir3.mkdirs();
             }
             String absolutePath2 = externalFilesDir3.getAbsolutePath();
-            File file3 = new File(absolutePath2, getFileName(str) + ".png");
+            File file3 = new File(absolutePath2, getFileName(filePath) + ".png");
             if (file3.exists()) {
                 return file3.getAbsolutePath();
             }
             PackageManager packageManager = Application.getContext().getPackageManager();
-            Drawable applicationIcon = packageManager.getApplicationIcon(packageManager.getPackageArchiveInfo(str, PackageManager.GET_ACTIVITIES).applicationInfo);
+            Drawable applicationIcon = packageManager.getApplicationIcon(packageManager.getPackageArchiveInfo(filePath, PackageManager.GET_ACTIVITIES).applicationInfo);
             int intrinsicWidth = applicationIcon.getIntrinsicWidth();
             int intrinsicHeight = applicationIcon.getIntrinsicHeight();
             Bitmap createBitmap = Bitmap.createBitmap(intrinsicWidth, intrinsicHeight, Bitmap.Config.ARGB_8888);

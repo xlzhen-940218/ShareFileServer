@@ -179,6 +179,7 @@ public class SQLUtils {
         }else {
             jsonArray=new StringBuilder();
         }
+        cursor.close();
         sqLiteDatabase.setTransactionSuccessful();
         sqLiteDatabase.endTransaction();
         sqLiteDatabase.close();
