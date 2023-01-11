@@ -26,10 +26,11 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    lint {
+        abortOnError false
+    }
+    namespace 'com.xlzhen.sharefileserver'
 
-        lintOptions {
-            abortOnError false
-        }
 }
 
 dependencies {

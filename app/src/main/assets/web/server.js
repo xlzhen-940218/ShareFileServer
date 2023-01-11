@@ -227,18 +227,18 @@ function getfile(auth, path) {
 	filtersInit(queryParams);
 	var data = app.queryDataBase(sqliteDb, "share_file_key", queryFields, filters);
 	data = JSON.parse(data);
-	if (data[0].auth == auth) {
-		var lastrequestTime = new Date();
-		lastrequestTime.setTime(parseInt(data[0].lastrequest) + (1000 * 60 * 60 * 2)); //2小时，刚好看完电影的长度
-		if (lastrequestTime < new Date()) { //上次请求时间比现在大于2小时，刷新auth
-			keys = [];
-			values = [];
-			paramsInit({
-				auth: sha256(new Date().getTime() + path + sha256key),
-				lastrequest: new Date().getTime() + ""
-			});
-			var success = app.updateDataBase(sqliteDb, "share_file_key", queryFields, filters, keys, values);
-		}
+	//if (data[0].auth == auth) {
+		//var lastrequestTime = new Date();
+		//lastrequestTime.setTime(parseInt(data[0].lastrequest) + (1000 * 60 * 60 * 2)); //2小时，刚好看完电影的长度
+		//if (lastrequestTime < new Date()) { //上次请求时间比现在大于2小时，刷新auth
+		//	keys = [];
+		//	values = [];
+		//	paramsInit({
+		//		auth: sha256(new Date().getTime() + path + sha256key),
+		//		lastrequest: new Date().getTime() + ""
+		//	});
+		//	var success = app.updateDataBase(sqliteDb, "share_file_key", queryFields, filters, keys, values);
+		//}
 
 
 		if (path.startsWith("./"))
@@ -253,12 +253,12 @@ function getfile(auth, path) {
 		data = JSON.parse(data);
 		result.filename = Object.keys(data).length > 0 && data[0].filename != null ? data[0].filename : '';
 		return JSON.stringify(result);
-	} else {
-		var result = {};
-		result.code = 500;
-		result.message = 'auth failed';
-		return JSON.stringify(result);
-	}
+	//} else {
+	//	var result = {};
+	//	result.code = 500;
+	//	result.message = 'auth failed';
+	//	return JSON.stringify(result);
+	//}
 
 }
 

@@ -78,6 +78,9 @@ public class JavaScriptInterface {
     @JavascriptInterface
     public int getFileType(String str) {
         String a = MimeTypeConvert.getSuffix(str.substring(str.lastIndexOf(".") + 1));
+        if(a == null){
+            return 6;
+        }
         if (a.startsWith("video")) {
             return 1;
         }
@@ -149,6 +152,9 @@ public class JavaScriptInterface {
         if(!new File(filePath).exists())
             return "./imgs/unknown.png";
         String suffix = MimeTypeConvert.getSuffix(filePath.substring(filePath.lastIndexOf(".") + 1));
+        if(suffix == null){
+            return "./imgs/unknown.png";
+        }
         if (suffix.equalsIgnoreCase(NanoHTTPD.MIME_PLAINTEXT) || suffix.endsWith("chm")) {
             return "./imgs/txt.png";
         }
