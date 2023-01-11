@@ -1,0 +1,26 @@
+{
+    "logs": [
+        {
+            "outputFile": "com.xlzhen.sharefileserver.app-mergeDebugResources-3:/values-zh/values-zh.xml",
+            "map": [
+                {
+                    "source": "C:\\GitHub\\ShareFileServer\\app\\src\\main\\res\\values-zh\\strings.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8,9,10",
+                        "startColumns": "4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "57,101,146,211,273,337,398,465,527",
+                        "endColumns": "42,43,63,60,62,59,65,60,49",
+                        "endOffsets": "95,140,205,267,331,392,459,521,572"
+                    },
+                    "to": {
+                        "startLines": "2,3,4,5,6,7,8,9,10",
+                        "startColumns": "4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,98,142,206,267,330,390,456,517",
+                        "endColumns": "42,43,63,60,62,59,65,60,49",
+                        "endOffsets": "93,137,201,262,325,385,451,512,562"
+                    }
+                }
+            ]
+        }
+    ]
+}

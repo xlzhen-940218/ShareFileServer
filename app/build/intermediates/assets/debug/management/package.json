@@ -1,0 +1,8 @@
+{
+  "logo": "imgs/management.png",
+  "name": "Share File Server Management",
+  "version": "1.0.0",
+  "description": "this is Share File Server Management",
+  "main": "server.js",
+  "author": "xlzhen <xionglongzhen@gmail.com>"
+}
