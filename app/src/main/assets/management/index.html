@@ -60,7 +60,6 @@
 						createView(result.title, result.data, false);
 						document.getElementById('deleteSelect').innerHTML = result.button;
 						document.getElementById('note').style.visibility = 'collapse';
-						loadShare();
 					});
 
 				} else {
@@ -69,6 +68,7 @@
 						data = result.data;
 						createView(result.title, result.data, true);
 						document.getElementById('note').style.visibility = 'visible';
+						loadShare();
 					});
 
 					$.post("getuseguide", function(result, status) {

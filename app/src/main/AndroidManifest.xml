@@ -8,12 +8,12 @@
         tools:ignore="CoarseFineLocation" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
-
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC"/>
     <application
-        android:name="com.xlzhen.sharefileserver.Application"
+        android:name=".Application"
         android:allowBackup="true"
         android:appComponentFactory="androidx.core.app.CoreComponentFactory"
         android:icon="@mipmap/ic_launcher"
@@ -21,9 +21,10 @@
         android:requestLegacyExternalStorage="true"
         android:supportsRtl="true"
         android:theme="@style/Theme.ShareFileServer"
-        android:usesCleartextTraffic="true">
+        android:usesCleartextTraffic="true"
+        tools:targetApi="p">
         <activity
-            android:name="com.xlzhen.sharefileserver.MainActivity"
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -41,8 +42,10 @@
             </intent-filter>
         </activity>
         <service
-            android:name="com.xlzhen.sharefileserver.service.ServerRunService"
-            android:label="@string/server_name" />
+            android:name=".service.ServerRunService"
+            android:foregroundServiceType="dataSync"
+            android:label="@string/server_name"
+            tools:ignore="ForegroundServicePermission" />
 
     </application>
 </manifest>

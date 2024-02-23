@@ -1,5 +1,6 @@
 package com.xlzhen.sharefileserver.service;
 
+import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -126,6 +127,7 @@ public class ServerRunService extends BaseService {
         return super.onStartCommand(intent, Service.START_FLAG_REDELIVERY, i2);
     }
 
+    @SuppressLint("ForegroundServiceType")
     public void notification() {
         NotificationChannel notificationChannel = Build.VERSION.SDK_INT >= 26 ? new NotificationChannel(ServerRunService.class.getName(), ServerRunService.class.getSimpleName(), NotificationManager.IMPORTANCE_HIGH) : null;
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);

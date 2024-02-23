@@ -1,8 +1,10 @@
 package com.xlzhen.sharefileserver;
 
+import android.Manifest;
 import android.content.ActivityNotFoundException;
 import android.content.ClipData;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -36,8 +38,8 @@ public class MainActivity extends AppCompatActivity {
         if (resultCode == -1 && requestCode == 1000) {
             String[] shareFiles = null;
             Uri uri = data.getData();
-            if ( uri  != null) {
-                shareFiles = new String[]{ShareFileToMeUtils.parseFileUri(this,  uri )};
+            if (uri != null) {
+                shareFiles = new String[]{ShareFileToMeUtils.parseFileUri(this, uri)};
             } else {
                 ClipData clipData = data.getClipData();
                 if (clipData != null) {
@@ -67,9 +69,12 @@ public class MainActivity extends AppCompatActivity {
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
         setContentView(R.layout.activity_main);
-        if (ContextCompat.checkSelfPermission(this, "android.permission.READ_EXTERNAL_STORAGE") != 0 || ContextCompat.checkSelfPermission(this, "android.permission.ACCESS_FINE_LOCATION") != 0) {
+        if (Build.VERSION.SDK_INT < 34 && ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+        }
+        if (ContextCompat.checkSelfPermission(this, "android.permission.ACCESS_FINE_LOCATION") != 0) {
             Toast.makeText(this, (int) R.string.get_wifiname_toast, Toast.LENGTH_SHORT).show();
-            ActivityCompat.requestPermissions(this, new String[]{"android.permission.READ_EXTERNAL_STORAGE", "android.permission.ACCESS_FINE_LOCATION"}, 1);
+            ActivityCompat.requestPermissions(this, new String[]{"android.permission.ACCESS_FINE_LOCATION"}, 1);
         } else if (Build.VERSION.SDK_INT >= 30 && !Environment.isExternalStorageManager()) {
             Intent intent = new Intent();
             intent.setAction("android.settings.MANAGE_APP_ALL_FILES_ACCESS_PERMISSION");
@@ -93,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
                 return super.onJsAlert(webView, str, str2, jsResult);
             }
         });
-        this.shareFiles  = ShareFileToMeUtils.getShareFiles(this);
+        this.shareFiles = ShareFileToMeUtils.getShareFiles(this);
 
         new Thread(() -> {
             try {

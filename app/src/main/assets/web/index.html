@@ -61,7 +61,6 @@
 						data = result.data;
 						createView(result.title, result.data, false);
 						document.getElementById('note').style.visibility = 'collapse';
-						loadShare();
 					});
 				} else {
 					$.post("get", function(result, status) {
@@ -69,6 +68,7 @@
 						data = result.data;
 						createView(result.title, result.data, true);
 						document.getElementById('note').style.visibility = 'visible';
+						loadShare();
 					});
 				}
 

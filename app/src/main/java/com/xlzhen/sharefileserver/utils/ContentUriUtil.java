@@ -8,12 +8,15 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.provider.OpenableColumns;
+import android.util.Log;
+
+import java.io.File;
 
 /* loaded from: classes7.dex */
 public class ContentUriUtil {
     public static String getPath(Context context, Uri uri) {
-        boolean isKitKat = Build.VERSION.SDK_INT >= 19;
-        if (!isKitKat || !DocumentsContract.isDocumentUri(context, uri)) {
+        if (!DocumentsContract.isDocumentUri(context, uri)) {
             if ("content".equalsIgnoreCase(uri.getScheme())) {
                 if (isGooglePhotosUri(uri)) {
                     return uri.getLastPathSegment();
@@ -29,9 +32,8 @@ public class ContentUriUtil {
                 return Environment.getExternalStorageDirectory() + "/" + split[1];
             }
         } else if (isDownloadsDocument(uri)) {
-            String id = DocumentsContract.getDocumentId(uri);
-            Uri contentUri = ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"), Long.valueOf(id).longValue());
-            return getDataColumn(context, contentUri, null, null);
+            String filename = getFileName(context, uri);
+            return "/storage/emulated/0/Download/" + filename;
         } else if (isMediaDocument(uri)) {
             String docId2 = DocumentsContract.getDocumentId(uri);
             String[] split2 = docId2.split(":");
@@ -43,6 +45,8 @@ public class ContentUriUtil {
                 contentUri2 = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
             } else if ("audio".equals(type)) {
                 contentUri2 = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+            } else if ("document".equals(type)) {
+                contentUri2 = MediaStore.Files.getContentUri("external");
             }
             String[] selectionArgs = {split2[1]};
             return getDataColumn(context, contentUri2, "_id=?", selectionArgs);
@@ -66,9 +70,7 @@ public class ContentUriUtil {
             }
             int index = cursor.getColumnIndexOrThrow("_data");
             String string = cursor.getString(index);
-            if (cursor != null) {
-                cursor.close();
-            }
+            cursor.close();
             return string;
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -84,6 +86,15 @@ public class ContentUriUtil {
             return path;
         }
 
+    }
+
+    public static String getFileName(Context context, Uri uri) {
+
+        Cursor cursor = context.getContentResolver().query(uri, null, null, null, null);
+        int nameindex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+        cursor.moveToFirst();
+
+        return cursor.getString(nameindex);
     }
 
     public static boolean isExternalStorageDocument(Uri uri) {
