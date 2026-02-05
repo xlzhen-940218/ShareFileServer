@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ShareFileServer.iml" filepath="$PROJECT_DIR$/.idea/modules/ShareFileServer.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/ShareFileServer.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/ShareFileServer.app.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/ShareFileServer.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/ShareFileServer.app.androidTest.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/ShareFileServer.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/ShareFileServer.app.main.iml" />
