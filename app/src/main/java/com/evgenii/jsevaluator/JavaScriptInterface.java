@@ -46,7 +46,7 @@ public class JavaScriptInterface {
 
     @JavascriptInterface
     public String getDir(String str) {
-        return Application.getContext().getExternalFilesDir(str).getAbsolutePath() + "/";
+        return Application.Companion.getContext().getExternalFilesDir(str).getAbsolutePath() + "/";
     }
 
     @JavascriptInterface
@@ -120,11 +120,11 @@ public class JavaScriptInterface {
     @JavascriptInterface
     public String getShareFiles() {
         String[] m8c;
-        if (Application.getShareFiles() == null) {
+        if (Application.Companion.getShareFiles() == null) {
             return "";
         }
         StringBuilder sb = new StringBuilder("[");
-        for (String str : Application.getShareFiles()) {
+        for (String str : Application.Companion.getShareFiles()) {
             if (str != null && str.length() > 0) {
                 sb.append("\"");
                 sb.append(str);
@@ -136,11 +136,11 @@ public class JavaScriptInterface {
 
     @JavascriptInterface
     public String getShareNote() {
-        String clipDataNote = Application.getClipDataNote();
+        String clipDataNote = Application.Companion.getClipDataNote();
         if (clipDataNote.length() <= 0) {
             return clipDataNote;
         }
-        Application.setClipDataNote("");
+        Application.Companion.setClipDataNote("");
         return "\r\n\n" + clipDataNote;
     }
 
@@ -165,7 +165,7 @@ public class JavaScriptInterface {
             return "./imgs/excel.png";
         }
         if (suffix.startsWith("audio") || suffix.startsWith("video")) {
-            File externalFilesDir = Application.getContext().getExternalFilesDir("thumbnail");
+            File externalFilesDir = Application.Companion.getContext().getExternalFilesDir("thumbnail");
             if (!externalFilesDir.exists()) {
                 externalFilesDir.mkdirs();
             }
@@ -201,7 +201,7 @@ public class JavaScriptInterface {
             }
             return file.getAbsolutePath();
         } else if (suffix.startsWith("image")) {
-            File externalFilesDir2 = Application.getContext().getExternalFilesDir("thumbnail");
+            File externalFilesDir2 = Application.Companion.getContext().getExternalFilesDir("thumbnail");
             if (!externalFilesDir2.exists()) {
                 externalFilesDir2.mkdirs();
             }
@@ -232,7 +232,7 @@ public class JavaScriptInterface {
         } else if (!suffix.equalsIgnoreCase("application/vnd.android.package-archive")) {
             return "";
         } else {
-            File externalFilesDir3 = Application.getContext().getExternalFilesDir("thumbnail");
+            File externalFilesDir3 = Application.Companion.getContext().getExternalFilesDir("thumbnail");
             if (!externalFilesDir3.exists()) {
                 externalFilesDir3.mkdirs();
             }
@@ -241,7 +241,7 @@ public class JavaScriptInterface {
             if (file3.exists()) {
                 return file3.getAbsolutePath();
             }
-            PackageManager packageManager = Application.getContext().getPackageManager();
+            PackageManager packageManager = Application.Companion.getContext().getPackageManager();
             Drawable applicationIcon = packageManager.getApplicationIcon(packageManager.getPackageArchiveInfo(filePath, PackageManager.GET_ACTIVITIES).applicationInfo);
             int intrinsicWidth = applicationIcon.getIntrinsicWidth();
             int intrinsicHeight = applicationIcon.getIntrinsicHeight();
@@ -271,7 +271,7 @@ public class JavaScriptInterface {
 
     @JavascriptInterface
     public String getWifiName() {
-        String ssid = ((WifiManager) Application.getContext().getApplicationContext().getSystemService(Context.WIFI_SERVICE)).getConnectionInfo().getSSID();
+        String ssid = ((WifiManager) Application.Companion.getContext().getApplicationContext().getSystemService(Context.WIFI_SERVICE)).getConnectionInfo().getSSID();
         return (ssid == null || ssid.length() == 0) ? "未知WIFI名称" : ssid;
     }
 
@@ -287,7 +287,7 @@ public class JavaScriptInterface {
 
     @JavascriptInterface
     public boolean registerShareFile(String str) {
-        Application.registerShareFile(true, str);
+        Application.Companion.registerShareFile(true, str);
         return true;
     }
 
@@ -328,7 +328,7 @@ public class JavaScriptInterface {
 
     @JavascriptInterface
     public boolean unregisterShareFile() {
-        Application.registerShareFile(false, "");
+        Application.Companion.registerShareFile(false, "");
         return true;
     }
 

@@ -425,7 +425,7 @@ public abstract class NanoHTTPD {
         private final List<TempFile> tempFiles;
 
         public DefaultTempFileManager() {
-            this.tmpdir = new File(Application.getContext().getExternalFilesDir("upload").getAbsolutePath());
+            this.tmpdir = new File(Application.Companion.getContext().getExternalFilesDir("upload").getAbsolutePath());
             if (!tmpdir.exists()) {
                 tmpdir.mkdirs();
             }
@@ -715,7 +715,7 @@ public abstract class NanoHTTPD {
                             }
                             files.put(part_name + count, path);
                         }
-                        file_name=Application.getContext().getExternalFilesDir("upload").getAbsolutePath() + "/" + file_name;
+                        file_name=Application.Companion.getContext().getExternalFilesDir("upload").getAbsolutePath() + "/" + file_name;
                         parms.put(part_name, file_name);
                     }
                 }

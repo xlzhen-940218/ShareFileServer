@@ -18,10 +18,10 @@ public class SQLUtils {
      */
     public static boolean createDb(String dbName,String[] createTables){
         if(dbPath==null){
-            dbPath= Application.getContext().getExternalFilesDir("db")+"/";
+            dbPath= Application.Companion.getContext().getExternalFilesDir("db")+"/";
         }
         try {
-            SQLiteDatabase sqLiteDatabase = Application.getContext().openOrCreateDatabase(dbPath+dbName+".db", Context.MODE_PRIVATE, null);
+            SQLiteDatabase sqLiteDatabase = Application.Companion.getContext().openOrCreateDatabase(dbPath+dbName+".db", Context.MODE_PRIVATE, null);
             sqLiteDatabase.beginTransaction();
             for (String createTable : createTables) {
                 sqLiteDatabase.execSQL(createTable);
@@ -46,9 +46,9 @@ public class SQLUtils {
      */
     public static boolean insertDb(String dbName,String table,String[] keys,String[] values){
         if(dbPath==null){
-            dbPath=Application.getContext().getExternalFilesDir("db")+"/";
+            dbPath=Application.Companion.getContext().getExternalFilesDir("db")+"/";
         }
-        SQLiteDatabase sqLiteDatabase = Application.getContext().openOrCreateDatabase(dbPath+dbName+".db", Context.MODE_PRIVATE, null);
+        SQLiteDatabase sqLiteDatabase = Application.Companion.getContext().openOrCreateDatabase(dbPath+dbName+".db", Context.MODE_PRIVATE, null);
         ContentValues contentValues = new ContentValues();
         for (int i = 0; i < keys.length; i++) {
             contentValues.put(keys[i], values[i]);
@@ -70,9 +70,9 @@ public class SQLUtils {
      */
     public static boolean deleteDb(String dbName,String table,String[] queryFields,String[] filters){
         if(dbPath==null){
-            dbPath=Application.getContext().getExternalFilesDir("db")+"/";
+            dbPath=Application.Companion.getContext().getExternalFilesDir("db")+"/";
         }
-        SQLiteDatabase sqLiteDatabase = Application.getContext().openOrCreateDatabase(dbPath+dbName+".db", Context.MODE_PRIVATE, null);
+        SQLiteDatabase sqLiteDatabase = Application.Companion.getContext().openOrCreateDatabase(dbPath+dbName+".db", Context.MODE_PRIVATE, null);
         StringBuilder queryField = new StringBuilder();
         for (String q : queryFields) {
             queryField.append(q).append("=?,");
@@ -98,9 +98,9 @@ public class SQLUtils {
      */
     public static boolean updateDb(String dbName, String table, String[] queryFields, String[] filters, String[] keys, String[] values) {
         if(dbPath==null){
-            dbPath=Application.getContext().getExternalFilesDir("db")+"/";
+            dbPath=Application.Companion.getContext().getExternalFilesDir("db")+"/";
         }
-        SQLiteDatabase sqLiteDatabase = Application.getContext().openOrCreateDatabase(dbPath+dbName+".db", Context.MODE_PRIVATE, null);
+        SQLiteDatabase sqLiteDatabase = Application.Companion.getContext().openOrCreateDatabase(dbPath+dbName+".db", Context.MODE_PRIVATE, null);
 
         ContentValues contentValues=new ContentValues();
         for (int i = 0; i < keys.length; i++) {
@@ -130,9 +130,9 @@ public class SQLUtils {
      */
     public static String queryDb(String dbName, String table, String[] queryFields, String[] filters) {
         if(dbPath==null){
-            dbPath=Application.getContext().getExternalFilesDir("db")+"/";
+            dbPath=Application.Companion.getContext().getExternalFilesDir("db")+"/";
         }
-        SQLiteDatabase sqLiteDatabase = Application.getContext().openOrCreateDatabase(dbPath+dbName+".db", Context.MODE_PRIVATE, null);
+        SQLiteDatabase sqLiteDatabase = Application.Companion.getContext().openOrCreateDatabase(dbPath+dbName+".db", Context.MODE_PRIVATE, null);
         StringBuilder queryField = new StringBuilder();
         for (String q : queryFields) {
             queryField.append(q).append("=?,");
