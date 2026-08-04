@@ -16,9 +16,16 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
+import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedCallback;
+import androidx.activity.SystemBarStyle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 import com.xlzhen.sharefileserver.service.ServerRunService;
 import com.xlzhen.sharefileserver.utils.ShareFileToMeUtils;
@@ -54,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /*
     @Override // android.app.Activity
     public void onBackPressed() {
         if (this.webView.canGoBack()) {
@@ -62,11 +70,36 @@ public class MainActivity extends AppCompatActivity {
             super.onBackPressed();
         }
     }
+    */
 
     @Override // android.app.Activity
     public void onCreate(Bundle bundle) {
+        EdgeToEdge.enable(this, SystemBarStyle.dark(android.graphics.Color.TRANSPARENT));
         super.onCreate(bundle);
         setContentView(R.layout.activity_main);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.root_layout), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            toolbar.setPadding(systemBars.left, systemBars.top, systemBars.right, 0);
+            findViewById(R.id.webView).setPadding(systemBars.left, 0, systemBars.right, systemBars.bottom);
+            return insets;
+        });
+
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if (webView.canGoBack()) {
+                    webView.goBack();
+                } else {
+                    setEnabled(false);
+                    getOnBackPressedDispatcher().onBackPressed();
+                }
+            }
+        });
+
         if (ContextCompat.checkSelfPermission(this, "android.permission.READ_EXTERNAL_STORAGE") != 0 || ContextCompat.checkSelfPermission(this, "android.permission.ACCESS_FINE_LOCATION") != 0) {
             Toast.makeText(this, (int) R.string.get_wifiname_toast, Toast.LENGTH_SHORT).show();
             ActivityCompat.requestPermissions(this, new String[]{"android.permission.READ_EXTERNAL_STORAGE", "android.permission.ACCESS_FINE_LOCATION"}, 1);

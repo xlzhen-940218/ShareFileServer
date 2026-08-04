@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Base application theme. -->
-    <style name="Theme.ShareFileServer" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="Theme.ShareFileServer" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="android:windowContentOverlay">@null</item>
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/black</item>

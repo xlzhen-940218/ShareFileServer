@@ -78,8 +78,10 @@ function getShareNoteTitle() {
 	switch (app.getLanguage()) {
 		case 'en':
 			result.data = 'Shared NotePad';
+			break;
 		case 'zh':
 			result.data = '共享记事本';
+			break;
 	}
 	result.code = 200;
 	result.message = 'success';
@@ -91,8 +93,10 @@ function getShareNoteDescription() {
 	switch (app.getLanguage()) {
 		case 'en':
 			result.data = 'LAN text sharing';
+			break;
 		case 'zh':
 			result.data = '局域网文本分享';
+			break;
 	}
 	result.code = 200;
 	result.message = 'success';

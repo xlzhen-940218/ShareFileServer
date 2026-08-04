@@ -7,6 +7,7 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ServiceInfo;
 import android.graphics.drawable.Icon;
 import android.os.Binder;
 import android.os.Build;
@@ -147,6 +148,10 @@ public class ServerRunService extends BaseService {
         build.flags = 2;
         build.flags = 34;
         build.flags = 34 | 64;
-        startForeground(1, build);
+        if (Build.VERSION.SDK_INT >= 34) {
+            startForeground(1, build, ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC);
+        } else {
+            startForeground(1, build);
+        }
     }
 }
