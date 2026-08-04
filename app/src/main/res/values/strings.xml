@@ -16,4 +16,15 @@
     <string name="permission_dialog_message">This app needs storage and location permissions to share files over the local network and detect your WiFi name. Please grant these permissions in the next step.</string>
     <string name="permission_dialog_positive">Grant</string>
     <string name="permission_dialog_negative">Exit</string>
+    
+    <string name="set_password">Set Password</string>
+    <string name="password_hint">Leave empty to disable password</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="password_saved">Password saved</string>
+    <string name="network_warning">Network Warning</string>
+    <string name="no_wifi_msg">No WiFi connection detected. Please connect to WiFi or turn on Portable Hotspot for other devices to connect.</string>
+    <string name="connect_wifi">Connect WiFi</string>
+    <string name="turn_on_hotspot">Turn On Hotspot</string>
+    <string name="ignore">Ignore</string>
 </resources>

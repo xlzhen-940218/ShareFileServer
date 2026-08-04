@@ -14,4 +14,15 @@
     <string name="permission_dialog_message">此应用需要存储和定位权限，以便在局域网内分享文件并识别您的 WiFi 名称。请在接下来的步骤中授予这些权限。</string>
     <string name="permission_dialog_positive">去授予</string>
     <string name="permission_dialog_negative">退出</string>
+
+    <string name="set_password">设置访问密码</string>
+    <string name="password_hint">留空表示禁用密码</string>
+    <string name="save">保存</string>
+    <string name="cancel">取消</string>
+    <string name="password_saved">密码已保存</string>
+    <string name="network_warning">网络警告</string>
+    <string name="no_wifi_msg">未检测到 WiFi 连接。请连接 WiFi 或开启便携式热点，以便其他设备连接。</string>
+    <string name="connect_wifi">去连接WIFI</string>
+    <string name="turn_on_hotspot">开启热点</string>
+    <string name="ignore">取消</string>
 </resources>

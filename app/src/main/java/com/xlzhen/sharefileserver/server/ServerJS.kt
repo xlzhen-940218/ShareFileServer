@@ -57,10 +57,10 @@ class ServerJS private constructor() {
     ): NanoHTTPD.Response {
         val matcher = Pattern.compile("function.*?$substring.*?\\((.*?)\\)").matcher(serverJs ?: "")
         if (!matcher.find()) {
-            return NanoHTTPD.newChunkedResponse(
+            return NanoHTTPD.newFixedLengthResponse(
                 NanoHTTPD.Response.Status.NOT_FOUND,
                 "application/json; charset=utf-8",
-                null
+                "{\"code\": 404, \"message\": \"Not Found\"}"
             )
         }
         val split = matcher.group(1)?.split(",") ?: emptyList()
@@ -91,10 +91,10 @@ class ServerJS private constructor() {
         }
         val str5 = jsResult
         if (str5 == null) {
-            return NanoHTTPD.newChunkedResponse(
+            return NanoHTTPD.newFixedLengthResponse(
                 NanoHTTPD.Response.Status.BAD_REQUEST,
                 "application/json; charset=utf-8",
-                null
+                "{\"code\": 400, \"message\": \"Bad Request\"}"
             )
         }
         if (str5.contains("requestStorageURL")) {
@@ -105,22 +105,32 @@ class ServerJS private constructor() {
                     val string2 = jsonObject.getString("filename")
                     try {
                         if (!string.contains("storage/") && !string.contains("data/app")) {
-                            return NanoHTTPD.newChunkedResponse(
+                            val stream = Application.getContext().assets.open("$serverPath/$string")
+                            val bytes = stream.readBytes()
+                            stream.close()
+                            return NanoHTTPD.newFixedLengthResponse(
                                 NanoHTTPD.Response.Status.OK,
                                 if (string.endsWith(".css")) "text/css" else "*/*",
-                                Application.getContext().assets.open("$serverPath/$string")
+                                java.io.ByteArrayInputStream(bytes),
+                                bytes.size.toLong()
                             )
                         }
                         val a = MimeTypeConvert.getSuffix(string.substring(string.lastIndexOf(".") + 1))
                         Log.i("Play MimeType", a)
-                        return NanoHTTPD.newChunkedResponse(
-                            NanoHTTPD.Response.Status.OK,
-                            a,
-                            FileInputStream(string)
-                        )
+                        val file = java.io.File(string)
+                        if (file.exists()) {
+                            return NanoHTTPD.newFixedLengthResponse(
+                                NanoHTTPD.Response.Status.OK,
+                                a,
+                                FileInputStream(file),
+                                file.length()
+                            )
+                        } else {
+                            return NanoHTTPD.newFixedLengthResponse(NanoHTTPD.Response.Status.NOT_FOUND, "*/*", "Not Found")
+                        }
                     } catch (e7: FileNotFoundException) {
                         e7.printStackTrace()
-                        return NanoHTTPD.newChunkedResponse(NanoHTTPD.Response.Status.NOT_FOUND, "*/*", null)
+                        return NanoHTTPD.newFixedLengthResponse(NanoHTTPD.Response.Status.NOT_FOUND, "*/*", "Not Found")
                     } catch (e8: IOException) {
                         e8.printStackTrace()
                         return NanoHTTPD.newFixedLengthResponse(str5)

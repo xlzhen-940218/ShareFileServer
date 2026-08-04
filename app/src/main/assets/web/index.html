@@ -25,14 +25,14 @@
     </a>
 </div>
 </div>
+<div id="downloadSelect" class="download_button unselect" onclick="downloadSelect()" style="visibility:hidden;"></div>
+
 <script src="js/jquery-3.5.1.min.js"></script>
 <script src="js/string.js"></script>
 <!-- 创建View -->
 <script>
-			var unselect =
-				'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFgAAABYCAYAAABxlTA0AAAAAXNSR0IArs4c6QAAA9xJREFUeAHtnE9rE1EUxZuEZFU3WRYRoRuh38JFQQqKm6zcSE2DKIJ+AfELVBBF8o9uXHUjFUTo9yi4KUiRLrNJVwlJPAfzwptpF8m8d+uMPYHpe2+Suffc3xwm09I7a2t6iYAIiIAIiIAIiIAIiIAIiIAIiIAIiIAIiIAIiIAI3AQCJcsiu93u7el0+gjbTqlU2pzNZhvIt26Zc4nYF9ByDi2n5XL5O7ajZrP5e4njMn3EBHC/398YjUbvUMhTFFLJpOyaDoLGCTQe1Gq1t7u7u+ex00YH3Ol0HsKxXyD6VmyxlvEAegg3P9nb2/sWM085ZrB2u/1qMpl8LRpcMqBmamcNMZlEczCdS4EQlzhpcMYJth4KOK7X62eNRuMiZgGrxjo8PFwfDAZ3oGkbmp5h20rFmFYqlcexnBwFMK+54/H4J13gxKKAEbY3EPoZ49Ttz9MIvWUY4znGfWw1pw16h9Vq9V6Ma3LCbS7BqiO/0NJw4YIHrVbrU17hskZqo0ZqxXzk6mYtrMmtQ8ZgB/NWDJeGXxC1uFvAl8VLCg8Rdt3H4tr7Al/OH11eAJ8A/N3QW7hgB/M+14cLYSe8LDihRRnnl7ITp5c1sTa3zjrGALzjJwfgHrZcXnN9nek5NVO7vx+AE7X57y07DwYMUZt+Mpz5Y39dpHlae7q2LLUEA4Yo/vq7ePFWbLEo2CStPV1blnKCASNp4m8L//o+NwsEd8wV2hO1uc+tMsYAvEq+G/dZATY+5QIswMYEjMPLwQJsTMA4vBwswMYEjMPLwQJsTMA4vBwswMYEjMPLwQJsTMA4vBwswMYEjMPLwQJsTMA4vBwswMYEjMPLwQJsTMA4vBwswMYEjMPLwQJsTMA4vBwswMYEjMPLwQJsTMA4vBwswMYEjMPLwQJsTMA4vBwswMYEjMPLwQJsTMA4vBwswMYEjMPLwQJsTMA4vBxcAMCJvjf2oRlrNgt/hfZEbVkSBzsY/2af6O9lk18WIXk4Jq09XVsWjcGA8W/2p35iiNr210Wap7Wna8tSSzBgPhLATwxRbE8NjuvHvI45NVO7nytdm//esvNgEBBxhDM/cQkhcovtqW5dlHHeUrvoW2ZNrC1UfzBgdkIC6oEvBOt9dIDe9/fleU6t1OxrZE2hXZ6MFwyYQfgwC5zxIed8QVwN7bU/2J6KeZQcfyPH/Ult1Eit1OyisxbW5NYhY3Cvskuuxxk4EskxGmCG5cMs0H76HtPcujZZ/qXVFNfd12hk/3DpnYw7ogKmBjoZkPVImfkJie40PimED7NAfDaFL+4u5vlyN8w19qiZ2mMLjO5gX6Ae6+XT0FwEREAEREAEREAEREAEREAEREAEREAEREAEREAEROB/JvAH3B6HUCv6+1oAAAAASUVORK5CYII=';
-			var select =
-				'data:image/png;base64,iVBORw0KGgoAAAAAAAHtnGuME1UUgO+ZtjNdsvgKGCVATIyKMfEVY6JhlZCAbMsuAYXwEmgXCUZjgqLGH0ZMjPEFJkZDNGwruIQIRmR32wX+iIIaN2gCvoiPBMmy0QQfkQXaaXeO53QpTLvt9jHT6exyb9LMnTtn7pzzze29556ZO0LIJAlIApKAJCAJSAKSgCQgCUgCkoAkIAlIApKAJCAJSAKSwFgm8D+ZgPC4j2vSOgAAAABJRU5ErkJggg==';
+			var unselect = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Crect x='3' y='3' width='18' height='18' rx='4' fill='white' stroke='%23999999' stroke-width='1.5'/%3E%3C/svg%3E";
+			var select = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Crect x='3' y='3' width='18' height='18' rx='4' fill='%230078D4' stroke='%230078D4' stroke-width='1.5'/%3E%3Cpath d='M8 12.5 L11 15.5 L16 9' fill='transparent' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E";
 			var data;
             function loadShare() {
                 $.post("getShareNoteTitle", function(result, status) {
@@ -54,6 +54,7 @@
 					}, function(result, status) {
 						result = JSON.parse(result);
 						data = result.data;
+                        document.getElementById('downloadSelect').innerHTML = result.button;
 						createView(result.title, result.data, false);
 						document.getElementById('note').style.display = 'none';
 						loadShare();
@@ -72,9 +73,6 @@
             $(function () {
                init();
             });
-
-			var item_open_template = '<a class="box" href="{url}" target="_blank"><img src="{thumb}" class="thumbnail" /><div><p>{filename}</p><font>{createtime}</font><span>{filesize}</span></div></a>';
-			var item_download_template = '<a class="box" href="{url}" download="{filename}"><img src="{thumb}" class="thumbnail" /><div><p>{filename}</p><font>{createtime}</font><span>{filesize}</span></div></a>';
 
 			function createView(title, data, home) {
 				document.getElementById('content').innerHTML = '';
@@ -99,32 +97,72 @@
 						else thumbUrl = 'imgs/other.png';
 					}
 
-					var type =data[i].filesize == '0';
-					if(type){
-						view +=
-							(item_open_template)
-							.format({
-								thumb: thumbUrl,
-								url: data[i].url.startsWith('./') ? data[i].url : 'getfile?path=' + data[i].url + '&auth=' + data[i].auth,
-								filename: data[i].filename,
-								createtime: timeStamp2String(data[i].createtime),
-								filesize: formatFileSize(data[i].filesize)
-							});
-					}else{
-					view +=
-							(item_download_template)
-							.format({
-								thumb: thumbUrl,
-								url: data[i].url.startsWith('./') ? data[i].url : 'getfile?path=' + data[i].url + '&auth=' + data[i].auth,
-								filename: data[i].filename,
-								createtime: timeStamp2String(data[i].createtime),
-								filesize: formatFileSize(data[i].filesize)
-							});
-					}
+                    var fileUrl = data[i].url.startsWith('./') ? data[i].url : 'getfile?path=' + data[i].url + '&auth=' + data[i].auth;
+                    var type = data[i].filesize == '0';
+                    var checkboxHtml = type ? '' : '<img class="check_box" src="' + unselect + '" style="visibility:' + (home ? 'hidden' : 'visible') + ';" onclick="selectchange(event, this, ' + i + ')" />';
+
+					if (type) {
+                        view += ('<a class="box" href="{url}" target="_blank"><img src="{thumb}" class="thumbnail" /><div><p>{filename}</p><font>{createtime}</font><span>{filesize}</span></div>{checkbox}</a>')
+						.format({
+							index: i,
+							thumb: thumbUrl,
+                            url: fileUrl,
+							filename: data[i].filename,
+							createtime: timeStamp2String(data[i].createtime),
+							filesize: formatFileSize(data[i].filesize),
+                            checkbox: checkboxHtml
+						});
+                    } else {
+                        view += ('<a class="box" href="{url}" download="{filename}"><img src="{thumb}" class="thumbnail" /><div><p>{filename}</p><font>{createtime}</font><span>{filesize}</span></div>{checkbox}</a>')
+						.format({
+							index: i,
+							thumb: thumbUrl,
+                            url: fileUrl,
+							filename: data[i].filename,
+							createtime: timeStamp2String(data[i].createtime),
+							filesize: formatFileSize(data[i].filesize),
+                            checkbox: checkboxHtml
+						});
+                    }
 				}
 				view += '</div>';
 				document.getElementById('content').innerHTML += view;
+				document.getElementById('downloadSelect').style.visibility = home ? 'hidden' : 'visible';
 			}
+
+			function selectchange(e, uielement, index) {
+                e.preventDefault();
+                e.stopPropagation();
+				data[index].isselect = !data[index].isselect;
+				uielement.src = data[index].isselect ? select : unselect;
+				
+                var addunselect = true;
+				for (var i = 0; i < data.length; i++) {
+					if (data[i].isselect) {
+						document.getElementById('downloadSelect').classList.remove('unselect');
+						addunselect = false;
+					}
+				}
+				if (addunselect) {
+					document.getElementById('downloadSelect').classList.add('unselect');
+                }
+			}
+
+            function downloadSelect() {
+				if (data == null) {
+					alert('Error');
+                    return;
+				}
+                var selectedFiles = [];
+				for (var i = 0; i < data.length; i++) {
+					if (data[i].isselect) {
+                        selectedFiles.push(data[i].url);
+					}
+				}
+                if (selectedFiles.length == 0) return;
+                var urlParams = selectedFiles.join(',');
+                window.location.href = "download_zip?files=" + encodeURIComponent(urlParams);
+            }
 
 			function timeStamp2String(time) {
 				var datetime = new Date();

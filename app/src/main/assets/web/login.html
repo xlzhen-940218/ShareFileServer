@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+    <title>Login - Share Files</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #f3f2f1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .login-box {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            text-align: center;
+            width: 100%;
+            max-width: 320px;
+            box-sizing: border-box;
+        }
+        h2 {
+            margin-top: 0;
+            color: #333;
+        }
+        input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            margin: 20px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #0078D4;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        button:hover {
+            background-color: #005a9e;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-box">
+        <h2 id="title">Enter Password</h2>
+        <input type="password" id="password" placeholder="Password" onkeypress="handleKeyPress(event)" />
+        <button id="login_btn" onclick="login()">Login</button>
+    </div>
+
+    <script>
+        var isZh = navigator.language.startsWith('zh');
+        if (isZh) {
+            document.title = "登录 - 分享文件";
+            document.getElementById('title').innerText = "请输入访问密码";
+            document.getElementById('password').placeholder = "访问密码";
+            document.getElementById('login_btn').innerText = "登录";
+        } else {
+            document.title = "Login - Share Files";
+            document.getElementById('title').innerText = "Enter Password";
+            document.getElementById('password').placeholder = "Password";
+            document.getElementById('login_btn').innerText = "Login";
+        }
+
+        function handleKeyPress(e) {
+            if (e.key === 'Enter') {
+                login();
+            }
+        }
+        function login() {
+            var pwd = document.getElementById('password').value;
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "login_verify", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        window.location.reload();
+                    } else {
+                        alert(isZh ? "密码错误！" : "Incorrect password!");
+                    }
+                }
+            };
+            xhr.send("password=" + encodeURIComponent(pwd));
+        }
+    </script>
+</body>
+</html>

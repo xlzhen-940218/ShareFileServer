@@ -63,7 +63,17 @@ function get(queryParams) {
 	}
 
 	result.data = data;
+	result.button = getDownloadButtonName();
 	return JSON.stringify(result);
+}
+
+function getDownloadButtonName() {
+	switch (app.getLanguage()) {
+		case 'en':
+			return 'Batch Download';
+		case 'zh':
+			return '打包批量下载';
+	}
 }
 
 function getHomeTitle() {

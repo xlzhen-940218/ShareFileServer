@@ -1,11 +1,16 @@
 package com.xlzhen.sharefileserver
 
 import android.content.ActivityNotFoundException
+import android.content.ComponentName
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.provider.Settings
 import android.view.Menu
 import android.view.MenuItem
 import android.webkit.JsResult
@@ -13,6 +18,7 @@ import android.webkit.WebChromeClient
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.SystemBarStyle
@@ -24,6 +30,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.xlzhen.sharefileserver.service.ServerRunService
+import com.xlzhen.sharefileserver.utils.DatabaseHelper
 import com.xlzhen.sharefileserver.utils.ShareFileToMeUtils
 
 class MainActivity : AppCompatActivity() {
@@ -54,6 +61,11 @@ class MainActivity : AppCompatActivity() {
                 webView.loadUrl("${ServerRunService.host}/${Application.registerShareFile}")
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        checkNetworkConnectivity()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -126,21 +138,50 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId != R.id.add_file) {
-            return super.onOptionsItemSelected(item)
+        if (item.itemId == R.id.add_file) {
+            val intent = Intent(Intent.ACTION_GET_CONTENT).apply {
+                type = "*/*"
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+            }
+            try {
+                startActivityForResult(Intent.createChooser(intent, getString(R.string.please_select_files)), 1000)
+            } catch (e: ActivityNotFoundException) {
+                e.printStackTrace()
+                Toast.makeText(this, R.string.please_install_file_explorer, Toast.LENGTH_SHORT).show()
+            }
+            return true
+        } else if (item.itemId == R.id.set_password) {
+            val dbHelper = DatabaseHelper(this)
+            
+            val container = android.widget.FrameLayout(this)
+            val params = android.widget.FrameLayout.LayoutParams(
+                android.view.ViewGroup.LayoutParams.MATCH_PARENT,
+                android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+            params.setMargins(60, 40, 60, 0)
+            
+            val textInputLayout = com.google.android.material.textfield.TextInputLayout(this)
+            val input = com.google.android.material.textfield.TextInputEditText(this)
+            input.setText(dbHelper.getSetting("password") ?: "")
+            input.inputType = android.text.InputType.TYPE_CLASS_TEXT or android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD
+            textInputLayout.hint = getString(R.string.password_hint)
+            textInputLayout.addView(input)
+            
+            container.addView(textInputLayout, params)
+            
+            com.google.android.material.dialog.MaterialAlertDialogBuilder(this)
+                .setTitle(getString(R.string.set_password))
+                .setView(container)
+                .setPositiveButton(getString(R.string.save)) { _, _ ->
+                    dbHelper.setSetting("password", input.text.toString())
+                    Toast.makeText(this, getString(R.string.password_saved), Toast.LENGTH_SHORT).show()
+                }
+                .setNegativeButton(getString(R.string.cancel), null)
+                .show()
+            return true
         }
-        val intent = Intent(Intent.ACTION_GET_CONTENT).apply {
-            type = "*/*"
-            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-            putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
-        }
-        try {
-            startActivityForResult(Intent.createChooser(intent, getString(R.string.please_select_files)), 1000)
-        } catch (e: ActivityNotFoundException) {
-            e.printStackTrace()
-            Toast.makeText(this, R.string.please_install_file_explorer, Toast.LENGTH_SHORT).show()
-        }
-        return true
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
@@ -186,5 +227,50 @@ class MainActivity : AppCompatActivity() {
             intent.data = Uri.parse("package:$packageName")
             startActivityForResult(intent, 10001)
         }
+    }
+
+    private fun checkNetworkConnectivity() {
+        val connectivityManager = getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
+        val network = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            connectivityManager.activeNetwork
+        } else {
+            null
+        }
+        
+        val hasWiFi = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val capabilities = connectivityManager.getNetworkCapabilities(network)
+            capabilities != null && capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
+        } else {
+            @Suppress("DEPRECATION")
+            val networkInfo = connectivityManager.activeNetworkInfo
+            @Suppress("DEPRECATION")
+            networkInfo != null && networkInfo.type == ConnectivityManager.TYPE_WIFI
+        }
+        
+        if (hasWiFi) return
+
+        val builder = com.google.android.material.dialog.MaterialAlertDialogBuilder(this)
+        builder.setTitle(getString(R.string.network_warning))
+        builder.setMessage(getString(R.string.no_wifi_msg))
+        
+        builder.setPositiveButton(getString(R.string.connect_wifi)) { _, _ ->
+            startActivity(Intent(Settings.ACTION_WIFI_SETTINGS))
+        }
+        
+        builder.setNegativeButton(getString(R.string.turn_on_hotspot)) { _, _ ->
+            val intent = Intent()
+            intent.component = ComponentName("com.android.settings", "com.android.settings.TetherSettings")
+            try {
+                startActivity(intent)
+            } catch (e: Exception) {
+                startActivity(Intent(Settings.ACTION_WIRELESS_SETTINGS))
+            }
+        }
+        
+        builder.setNeutralButton(getString(R.string.ignore)) { dialog, _ ->
+            dialog.dismiss()
+        }
+        
+        builder.show()
     }
 }

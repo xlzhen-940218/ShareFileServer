@@ -6,4 +6,8 @@
         android:icon="@mipmap/add_files"
         android:title="@string/add_files"
         app:showAsAction="always" />
+    <item
+        android:id="@+id/set_password"
+        android:title="Set Password"
+        app:showAsAction="never" />
 </menu>
