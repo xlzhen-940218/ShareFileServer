@@ -14,6 +14,7 @@ ShareFileServer is an Android application that allows users to share files over 
 - 支持多种文件类型：图片、视频、文档、音频、应用程序、压缩文件等 / Supports multiple file types: images, videos, documents, audio, applications, compressed files, etc.
 - 自动分类显示文件 / Automatically categorizes and displays files
 - 支持文件下载和在线预览 / Supports file download and online preview
+- 支持多文件及文件夹批量打包下载（ZIP格式）/ Supports batch downloading of multiple files and folders as a ZIP archive
 
 ### 2. 共享记事本 / Shared Notepad
 - 局域网内文本共享功能 / LAN text sharing functionality
@@ -25,7 +26,8 @@ ShareFileServer is an Android application that allows users to share files over 
 - **用户服务器** (端口8090)：提供文件共享界面 / **User Server** (Port 8090): Provides file sharing interface
 - 自动获取设备IP地址并生成访问链接 / Automatically obtains device IP address and generates access links
 
-### 4. 权限管理 / Permission Management
+### 4. 权限管理与安全保障 / Permission Management & Security
+- Web端访问密码保护，可在App设置中配置 / Web access password protection, configurable in App settings
 - 文件访问权限控制 / File access permission control
 - 基于SHA256的认证机制 / SHA256-based authentication mechanism
 - 2小时有效期的访问令牌 / 2-hour validity access tokens
@@ -55,28 +57,34 @@ ShareFileServer is an Android application that allows users to share files over 
    - 响应式设计适配各种屏幕 / Responsive design adapts to various screens
 
 ### 依赖库 / Dependencies
-- `androidx.appcompat:appcompat:1.5.0`
-- `com.google.android.material:material:1.6.1`
-- `NanoHTTPD/nanohttpd` - 轻量级HTTP服务器 / Lightweight HTTP server
-- `evgenyneu/js-evaluator-for-android` - JavaScript执行引擎 / JavaScript execution engine
+- `androidx.core:core-ktx:1.19.0`
+- `androidx.appcompat:appcompat:1.7.1`
+- `com.google.android.material:material:1.14.0`
+- `androidx.activity:activity-ktx:1.13.0`
+- **NanoHTTPD** - 轻量级HTTP服务器 (源码集成) / Lightweight HTTP server (Source-integrated)
+- **js-evaluator-for-android** - JavaScript执行引擎 (源码集成) / JavaScript execution engine (Source-integrated)
 
 ## 项目结构 / Project Structure
 
 ```
 app/src/main/
-├── java/com/xlzhen/sharefileserver/
-│   ├── MainActivity.java          # 主界面，WebView容器 / Main interface, WebView container
-│   ├── Application.java           # 应用全局配置 / Application global configuration
-│   ├── service/
-│   │   ├── ServerRunService.java  # 服务器服务 / Server service
-│   │   └── BaseService.java       # 服务基类 / Service base class
+├── java/
+│   ├── com/evgenii/jsevaluator/   # 源码集成的 JS Evaluator / Source-integrated JS Evaluator
+│   ├── fi/iki/elonen/             # 源码集成的 NanoHTTPD / Source-integrated NanoHTTPD
+│   └── com/xlzhen/sharefileserver/
+│       ├── MainActivity.kt            # 主界面，WebView容器 / Main interface, WebView container
+│       ├── Application.kt             # 应用全局配置 / Application global configuration
+│       ├── service/
+│       │   ├── ServerRunService.kt    # 服务器服务 / Server service
+│       │   └── BaseService.kt         # 服务基类 / Service base class
 │   ├── server/
-│   │   ├── MiniJsServer.java      # JavaScript服务器 / JavaScript server
-│   │   └── ServerJS.java          # 服务器JavaScript引擎 / Server JavaScript engine
+│   │   ├── MiniJsServer.kt        # JavaScript服务器 / JavaScript server
+│   │   └── ServerJS.kt            # 服务器JavaScript引擎 / Server JavaScript engine
 │   └── utils/
-│       ├── NetWorkUtils.java      # 网络工具 / Network utilities
-│       ├── ShareFileToMeUtils.java # 文件共享工具 / File sharing utilities
-│       └── ContentUriUtil.java    # Content URI处理 / Content URI processing
+│       ├── NetWorkUtils.kt        # 网络工具 / Network utilities
+│       ├── ShareFileToMeUtils.kt  # 文件共享工具 / File sharing utilities
+│       ├── ContentUriUtil.kt      # Content URI处理 / Content URI processing
+│       └── DatabaseHelper.kt      # 数据库工具类 / Database helper
 ├── assets/
 │   ├── management/                # 管理界面 (端口8080) / Management interface (Port 8080)
 │   │   ├── index.html
@@ -84,6 +92,7 @@ app/src/main/
 │   │   └── package.json
 │   └── web/                       # 用户界面 (端口8090) / User interface (Port 8090)
 │       ├── index.html
+│       ├── login.html             # 访问登录页 / Login page
 │       ├── server.js
 │       ├── sharednote.html        # 共享记事本 / Shared notepad
 │       └── video.html             # 视频播放页面 / Video playback page
@@ -123,15 +132,16 @@ app/src/main/
 - `READ_EXTERNAL_STORAGE` - 读取外部存储 / Read external storage
 - `ACCESS_FINE_LOCATION` - 获取WiFi名称（Android 10+要求） / Get WiFi name (Android 10+ requirement)
 - `INTERNET` - 网络访问 / Internet access
-- `FOREGROUND_SERVICE` - 前台服务 / Foreground service
+- `FOREGROUND_SERVICE` & `FOREGROUND_SERVICE_DATA_SYNC` - 前台服务及数据同步 / Foreground service and data sync
+- `NEARBY_WIFI_DEVICES` - 附近WiFi设备访问 (Android 12+) / Nearby WiFi devices access (Android 12+)
 - `MANAGE_EXTERNAL_STORAGE` - 管理外部存储（Android 11+） / Manage external storage (Android 11+)
 
 ## 开发指南 / Development Guide
 
 ### 构建配置 / Build Configuration
-- 最低SDK版本：21 (Android 5.0) / Min SDK Version: 21 (Android 5.0)
-- 目标SDK版本：32 (Android 12L) / Target SDK Version: 32 (Android 12L)
-- 编译SDK版本：36 / Compile SDK Version: 36
+- 最低SDK版本：23 (Android 6.0) / Min SDK Version: 23 (Android 6.0)
+- 目标SDK版本：37 / Target SDK Version: 37
+- 编译SDK版本：37 / Compile SDK Version: 37
 - Java版本：11 / Java Version: 11
 
 ### 自定义开发 / Custom Development

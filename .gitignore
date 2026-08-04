@@ -29,3 +29,5 @@ replay_pid*
 /.gradle
 /.artifacts
 /.idea
+/app/release
+*.jks
