@@ -4,12 +4,12 @@ plugins {
 
 android {
     namespace 'com.xlzhen.sharefileserver'
-    compileSdk 36
+    compileSdkVersion 37
 
     defaultConfig {
         applicationId 'com.xlzhen.sharefileserver'
         minSdk 23
-        targetSdk 36
+        targetSdk 37
         versionCode 7
         versionName "1.6"
 
@@ -38,5 +38,5 @@ dependencies {
     // some dependencies
     implementation 'androidx.appcompat:appcompat:1.7.1'
     implementation 'com.google.android.material:material:1.14.0'
-    implementation 'androidx.activity:activity:1.9.1'
+    implementation 'androidx.activity:activity:1.13.0'
 }

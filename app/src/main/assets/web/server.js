@@ -42,7 +42,9 @@ function get(queryParams) {
 			});
 			var authtable = app.queryDataBase(sqliteDb, "share_file_key", queryFields, filters);
 			authtable = JSON.parse(authtable);
-			data[i].thumbauth = authtable[0].auth;
+			if (authtable.length > 0) {
+				data[i].thumbauth = authtable[0].auth;
+			}
 		} catch (err) {
 			console.log('err:' + err + ',thumbnail:' + data[i].thumbnail);
 		}

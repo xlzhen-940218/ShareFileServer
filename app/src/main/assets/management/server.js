@@ -43,7 +43,9 @@ function get(queryParams) {
 			});
 			var authtable = app.queryDataBase(sqliteDb, "share_file_key", queryFields, filters);
 			authtable = JSON.parse(authtable);
-			data[i].thumbauth = authtable[0].auth;
+			if (authtable.length > 0) {
+				data[i].thumbauth = authtable[0].auth;
+			}
 		} catch (err) {
 			console.log('err:' + err + ',thumbnail:' + data[i].thumbnail);
 		}
@@ -277,11 +279,19 @@ function savefiles(data) {
 		];
 		app.insertDataBase(sqliteDb, 'share_file', keys, values);
 
+		// Save auth for the file itself
 		keys = ["url", "auth", "lastrequest"];
 		values = [decodeURIComponent(data[i].url), sha256(new Date().getTime() + data[i].url + sha256key), new Date().getTime() +
 			""
 		];
 		app.insertDataBase(sqliteDb, "share_file_key", keys, values);
+
+		// Save auth for the thumbnail too
+		if (data[i].thumbnail != null && data[i].thumbnail.length > 0) {
+			keys = ["url", "auth", "lastrequest"];
+			values = [decodeURIComponent(data[i].thumbnail), data[i].auth, new Date().getTime() + ""];
+			app.insertDataBase(sqliteDb, "share_file_key", keys, values);
+		}
 	}
 	var result = {};
 	result.code = 200;

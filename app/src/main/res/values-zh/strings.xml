@@ -10,4 +10,8 @@
     <string name="please_select_files">请选择需要分享的多个文件</string>
     <string name="server_name">服务器运行保障服务</string>
 
+    <string name="permission_dialog_title">需要权限</string>
+    <string name="permission_dialog_message">此应用需要存储和定位权限，以便在局域网内分享文件并识别您的 WiFi 名称。请在接下来的步骤中授予这些权限。</string>
+    <string name="permission_dialog_positive">去授予</string>
+    <string name="permission_dialog_negative">退出</string>
 </resources>

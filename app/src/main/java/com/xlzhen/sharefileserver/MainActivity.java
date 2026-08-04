@@ -19,6 +19,7 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
 import androidx.activity.SystemBarStyle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
@@ -100,15 +101,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        if (ContextCompat.checkSelfPermission(this, "android.permission.READ_EXTERNAL_STORAGE") != 0 || ContextCompat.checkSelfPermission(this, "android.permission.ACCESS_FINE_LOCATION") != 0) {
-            Toast.makeText(this, (int) R.string.get_wifiname_toast, Toast.LENGTH_SHORT).show();
-            ActivityCompat.requestPermissions(this, new String[]{"android.permission.READ_EXTERNAL_STORAGE", "android.permission.ACCESS_FINE_LOCATION"}, 1);
-        } else if (Build.VERSION.SDK_INT >= 30 && !Environment.isExternalStorageManager()) {
-            Intent intent = new Intent();
-            intent.setAction("android.settings.MANAGE_APP_ALL_FILES_ACCESS_PERMISSION");
-            intent.setData(Uri.parse("package:" + getPackageName()));
-            startActivityForResult(intent, 10001);
-        }
+        checkAndRequestPermissions();
+
         ServerRunService.start(this);
         WebView webView = (WebView) findViewById(R.id.webView);
         this.webView = webView;
@@ -180,14 +174,49 @@ public class MainActivity extends AppCompatActivity {
     @Override // android.app.Activity
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == 2000 && grantResults.length > 0 && grantResults[0] == 0) {
-            Toast.makeText(this, "Permission Get Success", Toast.LENGTH_SHORT).show();
-            if (Build.VERSION.SDK_INT >= 30 && !Environment.isExternalStorageManager()) {
-                Intent intent = new Intent();
-                intent.setAction("android.settings.MANAGE_APP_ALL_FILES_ACCESS_PERMISSION");
-                intent.setData(Uri.parse("package:" + getPackageName()));
-                startActivityForResult(intent, 10001);
+        if (requestCode == 1) {
+            boolean allGranted = true;
+            for (int result : grantResults) {
+                if (result != 0) {
+                    allGranted = false;
+                    break;
+                }
             }
+            if (allGranted) {
+                checkManageExternalStoragePermission();
+            }
+        }
+    }
+
+    private void checkAndRequestPermissions() {
+        if (ContextCompat.checkSelfPermission(this, "android.permission.READ_EXTERNAL_STORAGE") != 0 ||
+                ContextCompat.checkSelfPermission(this, "android.permission.ACCESS_FINE_LOCATION") != 0) {
+
+            new AlertDialog.Builder(this)
+                    .setTitle(R.string.permission_dialog_title)
+                    .setMessage(R.string.permission_dialog_message)
+                    .setCancelable(false)
+                    .setPositiveButton(R.string.permission_dialog_positive, (dialog, which) -> {
+                        ActivityCompat.requestPermissions(this, new String[]{
+                                "android.permission.READ_EXTERNAL_STORAGE",
+                                "android.permission.ACCESS_FINE_LOCATION"
+                        }, 1);
+                    })
+                    .setNegativeButton(R.string.permission_dialog_negative, (dialog, which) -> {
+                        finish();
+                    })
+                    .show();
+        } else {
+            checkManageExternalStoragePermission();
+        }
+    }
+
+    private void checkManageExternalStoragePermission() {
+        if (Build.VERSION.SDK_INT >= 30 && !Environment.isExternalStorageManager()) {
+            Intent intent = new Intent();
+            intent.setAction("android.settings.MANAGE_APP_ALL_FILES_ACCESS_PERMISSION");
+            intent.setData(Uri.parse("package:" + getPackageName()));
+            startActivityForResult(intent, 10001);
         }
     }
 }

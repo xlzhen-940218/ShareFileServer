@@ -11,4 +11,9 @@
     <string name="please_select_files">Please select multiple files to share!</string>
     <string name="search_menu_title">Search</string>
     <string name="server_name">Server Run Service</string>
+
+    <string name="permission_dialog_title">Permissions Required</string>
+    <string name="permission_dialog_message">This app needs storage and location permissions to share files over the local network and detect your WiFi name. Please grant these permissions in the next step.</string>
+    <string name="permission_dialog_positive">Grant</string>
+    <string name="permission_dialog_negative">Exit</string>
 </resources>
