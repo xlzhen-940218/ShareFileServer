@@ -227,10 +227,14 @@ This project is released under an open source license. Please see the LICENSE fi
 
 ## 预览截图 / Preview Screenshots
 
-![](1663904347501.jpg)
-![](1663904347512.jpg)
-![](1663904347522.jpg)
-![](1663904347532.jpg)
+![server homepage](1.jpg)
+![client and server notes](2.jpg)
+![download batch files zip](3.jpg)
+![client input password](4.jpg)
+![set password](5.jpg)
+![delete share file](6.jpg)
+![server add file to share](7.jpg)
+![client homepage](8.jpg)
 
 ## 联系方式 / Contact Information
 
