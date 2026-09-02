@@ -2,6 +2,15 @@
 
 [English Version](#english-version)
 
+> [!WARNING]
+> **重要提示：由于开发者弄丢了原始签名密钥，新版本无法直接覆盖安装。**
+> 
+> 在安装新版本之前，请务必按照以下步骤操作以保留您的数据：
+> 1. 使用 `adb backup -f sharefileserver.ab -noapk com.xlzhen.sharefileserver` 备份原始数据。
+> 2. 卸载旧版本的 App。
+> 3. 安装新版本。
+> 4. 使用 `adb restore sharefileserver.ab` 还原数据。
+
 ## 项目概述
 
 ShareFileServer 是一个Android应用程序，允许用户在本地网络中通过Web界面共享文件。该应用在Android设备上运行一个HTTP服务器，其他设备可以通过浏览器访问并下载共享的文件。
@@ -247,6 +256,15 @@ adb logcat -s ShareFileServer
 <h1 id="english-version">ShareFileServer - Android Local Network File Sharing Server</h1>
 
 [中文版](#sharefileserver---android本地网络文件共享服务器)
+
+> [!WARNING]
+> **IMPORTANT: Due to the loss of the original signing key, the new version cannot be installed over the old one.**
+> 
+> Before installing the new version, please follow these steps to preserve your data:
+> 1. Backup original data using `adb backup -f sharefileserver.ab -noapk com.xlzhen.sharefileserver`.
+> 2. Uninstall the old version of the App.
+> 3. Install the new version.
+> 4. Restore data using `adb restore sharefileserver.ab`.
 
 ## Project Overview
 
