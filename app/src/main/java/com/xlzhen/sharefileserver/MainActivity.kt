@@ -187,45 +187,61 @@ class MainActivity : AppCompatActivity() {
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == 1) {
-            val allGranted = grantResults.all { it == android.content.pm.PackageManager.PERMISSION_GRANTED }
-            if (allGranted) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && !Environment.isExternalStorageManager()) {
                 checkManageExternalStoragePermission()
             }
         }
     }
 
     private fun checkAndRequestPermissions() {
-        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE) != android.content.pm.PackageManager.PERMISSION_GRANTED ||
-            ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != android.content.pm.PackageManager.PERMISSION_GRANTED
-        ) {
+        val needStorage = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            !Environment.isExternalStorageManager()
+        } else {
+            ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE) != android.content.pm.PackageManager.PERMISSION_GRANTED
+        }
+        val needLocation = ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != android.content.pm.PackageManager.PERMISSION_GRANTED
+
+        if (needStorage || needLocation) {
             AlertDialog.Builder(this)
                 .setTitle(R.string.permission_dialog_title)
                 .setMessage(R.string.permission_dialog_message)
                 .setCancelable(false)
                 .setPositiveButton(R.string.permission_dialog_positive) { _, _ ->
-                    ActivityCompat.requestPermissions(
-                        this,
-                        arrayOf(
-                            android.Manifest.permission.READ_EXTERNAL_STORAGE,
-                            android.Manifest.permission.ACCESS_FINE_LOCATION
-                        ),
-                        1
-                    )
+                    val permissionsToRequest = mutableListOf<String>()
+                    if (needLocation) {
+                        permissionsToRequest.add(android.Manifest.permission.ACCESS_FINE_LOCATION)
+                    }
+                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R && needStorage) {
+                        permissionsToRequest.add(android.Manifest.permission.READ_EXTERNAL_STORAGE)
+                    }
+
+                    if (permissionsToRequest.isNotEmpty()) {
+                        ActivityCompat.requestPermissions(
+                            this,
+                            permissionsToRequest.toTypedArray(),
+                            1
+                        )
+                    } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && needStorage) {
+                        checkManageExternalStoragePermission()
+                    }
                 }
                 .setNegativeButton(R.string.permission_dialog_negative) { _, _ ->
                     finish()
                 }
                 .show()
-        } else {
-            checkManageExternalStoragePermission()
         }
     }
 
     private fun checkManageExternalStoragePermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && !Environment.isExternalStorageManager()) {
-            val intent = Intent(android.provider.Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
-            intent.data = Uri.parse("package:$packageName")
-            startActivityForResult(intent, 10001)
+            try {
+                val intent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
+                intent.data = Uri.parse("package:$packageName")
+                startActivityForResult(intent, 10001)
+            } catch (e: Exception) {
+                val intent = Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION)
+                startActivityForResult(intent, 10001)
+            }
         }
     }
 
